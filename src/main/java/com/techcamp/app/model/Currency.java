@@ -3,6 +3,8 @@ package com.techcamp.app.model;
 import java.io.Serializable;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -39,7 +41,7 @@ public class Currency implements Serializable{
 	private String symbol;
 	
 	//Relation with country
-	//@JsonIgnore
+	@JsonIgnore
 	@OneToMany(mappedBy="currency",cascade = CascadeType.ALL,orphanRemoval = true)
 	private List<Country> country;
 	

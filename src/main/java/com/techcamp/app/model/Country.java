@@ -36,6 +36,7 @@ public class Country implements Serializable{
 	@Column(name="name")
 	private String name;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "country", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Company> companies;
 	
