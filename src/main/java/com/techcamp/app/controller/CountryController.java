@@ -14,23 +14,25 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.techcamp.app.model.Currency;
-import com.techcamp.app.service.CurrencyService;
+
+import com.techcamp.app.model.Country;
+import com.techcamp.app.service.CountryService;
+
 
 @RestController
-@RequestMapping("/currency")
-public class CurrencyController {
+@RequestMapping("/countries")
+public class CountryController {
 	
 	@Autowired
-	private CurrencyService currService;
+	private CountryService countryService;
 	
 	
 	//Read all
 	@GetMapping
-	public List<Currency> readAll(){
+	public List<Country> readAll(){
 		
-		List<Currency> currs = StreamSupport.
-				stream(currService.findAll().spliterator(), false).
+		List<Country> currs = StreamSupport.
+				stream(countryService.findAll().spliterator(), false).
 				collect(Collectors.toList());
 		
 		return currs;
@@ -40,11 +42,11 @@ public class CurrencyController {
 	//Read all currencies using Pageable
 	//The index of the page begin with 0
 	@GetMapping("/page/{pageNo}/{pageSize}")
-	public List<Currency> getPaginatedCurrencies(@PathVariable int pageNo, 
+	public List<Country> getPaginatedCurrencies(@PathVariable int pageNo, 
 			@PathVariable int pageSize){
 		
 		Pageable paging = PageRequest.of(pageNo, pageSize);
-		Page<Currency> pageCurr = currService.findAll(paging);
+		Page<Country> pageCurr = countryService.findAll(paging);
 		
 		//System.out.print("Entro en page");
 		
@@ -53,17 +55,15 @@ public class CurrencyController {
 	
 	//Read currencies by id
 	@GetMapping("/{id}")
-	public ResponseEntity<Currency> read(@PathVariable(value="id")Long currId){
-		Optional<Currency> oCurr = currService.findById(currId);
+	public ResponseEntity<Country> read(@PathVariable(value="id")String counId){
+		Optional<Country> oCoun = countryService.findById(counId);
 		//Handle error
-		if(!oCurr.isPresent()) {
+		if(!oCoun.isPresent()) {
 			return ResponseEntity.notFound().build();
 		}
 		
-		return ResponseEntity.ok(oCurr.get());
+		return ResponseEntity.ok(oCoun.get());
 		
 	}
-	
-	
 	
 }

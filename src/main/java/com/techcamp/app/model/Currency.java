@@ -1,8 +1,13 @@
 package com.techcamp.app.model;
 
+import java.io.Serializable;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -13,7 +18,12 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name="currency")
-public class Currency {
+public class Currency implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@Column(name="code_curr_id")
@@ -29,6 +39,9 @@ public class Currency {
 	private String symbol;
 	
 	//Relation with country
+	//@JsonIgnore
+	@OneToMany(mappedBy="currency",cascade = CascadeType.ALL,orphanRemoval = true)
+	private List<Country> country;
 	
 	public Long getId() {
 		return id;
@@ -61,4 +74,14 @@ public class Currency {
 	public void setSymbol(String symbol) {
 		this.symbol = symbol;
 	}
+
+	public List<Country> getCountry() {
+		return country;
+	}
+
+	public void setCountry(List<Country> country) {
+		this.country = country;
+	}
+	
+	
 }
