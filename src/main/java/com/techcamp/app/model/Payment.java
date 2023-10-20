@@ -40,7 +40,7 @@ public class Payment implements Serializable {
     @Column(name = "payment_id")
     private Long paymentId;
 
-    @Column(name = "PAY_DATE")
+    @Column(name = "pay_date")
     private Date payDate;
 
     @Column(name = "total_benefits")
@@ -62,11 +62,11 @@ public class Payment implements Serializable {
     private Integer period;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "personal_id_fk")
+    @JoinColumn(name = "employee_fk")
     private Employee employee;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "period_id_fk")
+    @JoinColumn(name = "type_period_fk")
     private TypePeriod typePeriod;
 
     @OneToMany(mappedBy = "payment", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -159,6 +159,8 @@ public class Payment implements Serializable {
 	public void setPaymentConcepts(List<PaymentConcept> paymentConcepts) {
 		this.paymentConcepts = paymentConcepts;
 	}
+
+	
 
     
     

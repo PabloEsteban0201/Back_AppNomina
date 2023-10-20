@@ -28,37 +28,36 @@ public class Currency implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name="code_curr_id")
-	private Long id;
-	
-	@Column(name="name")
-	private String name;
+    @Column(name = "code_curr_id")
+    private Long codeCurrId;
 
-	@Column(name="abbreviation")
-	private String abbreviation;
-	
-	@Column(name="symbol")
-	private String symbol;
-	
-	//Relation with country
-	@JsonIgnore
-	@OneToMany(mappedBy="currency",cascade = CascadeType.ALL,orphanRemoval = true)
-	private List<Country> country;
-	
-	public Long getId() {
-		return id;
+    @Column(name = "name_currency")
+    private String nameCurrency;
+
+    @Column(name = "abbreviation")
+    private String abbreviation;
+
+    @Column(name = "symbol")
+    private String symbol;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "currency",cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Country> countries;
+
+	public Long getCodeCurrId() {
+		return codeCurrId;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setCodeCurrId(Long codeCurrId) {
+		this.codeCurrId = codeCurrId;
 	}
 
-	public String getName() {
-		return name;
+	public String getNameCurrency() {
+		return nameCurrency;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setNameCurrency(String nameCurrency) {
+		this.nameCurrency = nameCurrency;
 	}
 
 	public String getAbbreviation() {
@@ -77,13 +76,15 @@ public class Currency implements Serializable{
 		this.symbol = symbol;
 	}
 
-	public List<Country> getCountry() {
-		return country;
+	public List<Country> getCountries() {
+		return countries;
 	}
 
-	public void setCountry(List<Country> country) {
-		this.country = country;
+	public void setCountries(List<Country> countries) {
+		this.countries = countries;
 	}
+	
+	
 	
 	
 }

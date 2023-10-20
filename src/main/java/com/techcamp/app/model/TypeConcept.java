@@ -29,8 +29,8 @@ public class TypeConcept implements Serializable {
     @Column(name = "concept_id")
     private Long conceptId;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "name_concept")
+    private String nameConcept;
 
     @Column(name = "rate")
     private BigDecimal rate;
@@ -49,12 +49,12 @@ public class TypeConcept implements Serializable {
 		this.conceptId = conceptId;
 	}
 
-	public String getName() {
-		return name;
+	public String getNameConcept() {
+		return nameConcept;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setNameConcept(String nameConcept) {
+		this.nameConcept = nameConcept;
 	}
 
 	public BigDecimal getRate() {

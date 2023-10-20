@@ -37,7 +37,7 @@ public class CurrencyController {
 	}
 	
 	
-	//Read all currencies using Pageable
+	//Read all currencies using pagination
 	//The index of the page begin with 0
 	@GetMapping("/page/{pageNo}/{pageSize}")
 	public List<Currency> getPaginatedCurrencies(@PathVariable int pageNo, 
@@ -46,7 +46,6 @@ public class CurrencyController {
 		Pageable paging = PageRequest.of(pageNo, pageSize);
 		Page<Currency> pageCurr = currService.findAll(paging);
 		
-		//System.out.print("Entro en page");
 		
 		return pageCurr.toList();
 	}

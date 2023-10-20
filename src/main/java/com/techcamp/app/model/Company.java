@@ -30,15 +30,15 @@ public class Company implements Serializable {
     @Column(name = "company_id")
     private Long companyId;
 
-    @Column(name = "name")
-    private String name;
+	@Column(name = "name_company")
+    private String nameCompany;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "country_code_fk")
     private Country country;
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CompanyCharge> companyCharges;
+    private List<Employee> employees;
 
 	public Long getCompanyId() {
 		return companyId;
@@ -48,12 +48,12 @@ public class Company implements Serializable {
 		this.companyId = companyId;
 	}
 
-	public String getName() {
-		return name;
+	public String getNameCompany() {
+		return nameCompany;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setNameCompany(String nameCompany) {
+		this.nameCompany = nameCompany;
 	}
 
 	public Country getCountry() {
@@ -64,13 +64,15 @@ public class Company implements Serializable {
 		this.country = country;
 	}
 
-	public List<CompanyCharge> getCompanyCharges() {
-		return companyCharges;
+	public List<Employee> getEmployees() {
+		return employees;
 	}
 
-	public void setCompanyCharges(List<CompanyCharge> companyCharges) {
-		this.companyCharges = companyCharges;
+	public void setEmployees(List<Employee> employees) {
+		this.employees = employees;
 	}
+
+	
     
     
 }

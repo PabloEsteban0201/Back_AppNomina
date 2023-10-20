@@ -30,11 +30,15 @@ public class Country implements Serializable{
 	private static final long serialVersionUID = -699945533089400954L;
 
 	@Id
-	@Column(name="code_id")
-	private String code_id;
+    @Column(name = "code_id")
+    private Long codeId;
 	
-	@Column(name="name")
-	private String name;
+	@Column(name = "iso_abrreviation")
+	private String isoAbbreviation;
+	
+	@Column(name = "name_country")
+    private String nameCountry;
+
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "country", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -42,23 +46,31 @@ public class Country implements Serializable{
 	
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="currency_fk")
+	@JoinColumn(name="code_curr_fk")
 	private Currency currency;
 
-	public String getCode_id() {
-		return code_id;
+	public Long getCodeId() {
+		return codeId;
 	}
 
-	public void setCode_id(String code_id) {
-		this.code_id = code_id;
-	}
-	
-	public String getName() {
-		return name;
+	public void setCodeId(Long codeId) {
+		this.codeId = codeId;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public String getIsoAbbreviation() {
+		return isoAbbreviation;
+	}
+
+	public void setIsoAbbreviation(String isoAbbreviation) {
+		this.isoAbbreviation = isoAbbreviation;
+	}
+
+	public String getNameCountry() {
+		return nameCountry;
+	}
+
+	public void setNameCountry(String nameCountry) {
+		this.nameCountry = nameCountry;
 	}
 
 	public List<Company> getCompanies() {
@@ -68,7 +80,7 @@ public class Country implements Serializable{
 	public void setCompanies(List<Company> companies) {
 		this.companies = companies;
 	}
-	
+
 	public Currency getCurrency() {
 		return currency;
 	}
@@ -76,6 +88,8 @@ public class Country implements Serializable{
 	public void setCurrency(Currency currency) {
 		this.currency = currency;
 	}
+
+	
 
 	
 

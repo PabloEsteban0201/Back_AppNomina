@@ -8,6 +8,8 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -29,11 +31,15 @@ public class Employee implements Serializable {
 	private static final long serialVersionUID = -2862943945972036550L;
 
 	@Id
-    @Column(name = "personal_id")
-    private Long personalId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "employee_id")
+    private Long employeeId;
+	
+	@Column(name = "personal_number")
+    private Long personalNumber;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "name_person")
+    private String namePerson;
 
     @Column(name = "lastname")
     private String lastname;
@@ -51,23 +57,35 @@ public class Employee implements Serializable {
     @JoinColumn(name = "charge_fk")
     private Charge charge;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "company_fk")
+    private Company company;
+    
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Payment> payments;
 
-	public Long getPersonalId() {
-		return personalId;
+	public Long getEmployeeId() {
+		return employeeId;
 	}
 
-	public void setPersonalId(Long personalId) {
-		this.personalId = personalId;
+	public void setEmployeeId(Long employeeId) {
+		this.employeeId = employeeId;
 	}
 
-	public String getName() {
-		return name;
+	public Long getPersonalNumber() {
+		return personalNumber;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setPersonalNumber(Long personalNumber) {
+		this.personalNumber = personalNumber;
+	}
+
+	public String getNamePerson() {
+		return namePerson;
+	}
+
+	public void setNamePerson(String namePerson) {
+		this.namePerson = namePerson;
 	}
 
 	public String getLastname() {
@@ -110,6 +128,14 @@ public class Employee implements Serializable {
 		this.charge = charge;
 	}
 
+	public Company getCompany() {
+		return company;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+
 	public List<Payment> getPayments() {
 		return payments;
 	}
@@ -117,6 +143,8 @@ public class Employee implements Serializable {
 	public void setPayments(List<Payment> payments) {
 		this.payments = payments;
 	}
+
+	
 
     
 }
