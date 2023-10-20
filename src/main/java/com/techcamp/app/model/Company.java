@@ -3,6 +3,8 @@ package com.techcamp.app.model;
 import java.io.Serializable;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -33,10 +35,12 @@ public class Company implements Serializable {
 	@Column(name = "name_company")
     private String nameCompany;
 
+	@JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "country_code_fk")
     private Country country;
 
+	@JsonIgnore
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Employee> employees;
 
