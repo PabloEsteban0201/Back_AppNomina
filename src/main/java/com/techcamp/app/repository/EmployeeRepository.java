@@ -1,11 +1,15 @@
 package com.techcamp.app.repository;
 
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.techcamp.app.dto.EmployeeDto;
 import com.techcamp.app.model.Employee;
+
 
 public interface EmployeeRepository extends JpaRepository<Employee, Long>{
 	
@@ -17,4 +21,12 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long>{
 			nativeQuery=true)
 	String getCompanyNameByEmployeeId(@Param("id_employee") Long id_employee);
 
+	@Query(value="SELECT cha.name_charge FROM charges CHA, employees E WHERE "
+			+ "%:id_employee% LIKE e.employee_id AND "
+			+ "e.charge_fk LIKE cha.charge_id", nativeQuery=true)
+	String getChargeNameByEmployeeId(@Param("id_employee") Long id_employee);
+	
+	@Query(name="getEmployeesDto",nativeQuery = true)
+	List<EmployeeDto> getEmployeesDto();
+	
 }

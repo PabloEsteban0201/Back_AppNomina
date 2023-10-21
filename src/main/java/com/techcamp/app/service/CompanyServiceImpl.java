@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.techcamp.app.model.Company;
 import com.techcamp.app.repository.CompanyRepository;
@@ -18,24 +19,28 @@ public class CompanyServiceImpl implements CompanyService {
 	private CompanyRepository companyRepo;
 
 	@Override
+	@Transactional(readOnly=true)
 	public Iterable<Company> findAll() {
 		// TODO Auto-generated method stub
 		return companyRepo.findAll();
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public Page<Company> findAll(Pageable pageable) {
 		// TODO Auto-generated method stub
 		return companyRepo.findAll(pageable);
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public Optional<Company> findById(Long id) {
 		// TODO Auto-generated method stub
 		return companyRepo.findById(id);
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public List<Company> getCompanyByEmployeeId(Long employeeId) {
 		// TODO Auto-generated method stub
 		return companyRepo.getCompanyByEmployeeId(employeeId);

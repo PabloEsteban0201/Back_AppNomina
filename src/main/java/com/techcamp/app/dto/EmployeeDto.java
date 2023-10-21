@@ -1,5 +1,6 @@
 package com.techcamp.app.dto;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import lombok.AllArgsConstructor;
@@ -8,13 +9,18 @@ import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmployeeDto {
+public class EmployeeDto implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2337185372249621809L;
 
 	private String namePerson;
 	
 	private String lastname;
 	
-	private Long peronsalNumber;
+	private Long personalNumber;
 	
 	private String nameCompany;
 	
@@ -42,12 +48,12 @@ public class EmployeeDto {
 		this.lastname = lastname;
 	}
 
-	public Long getPeronsalNumber() {
-		return peronsalNumber;
+	public Long getPersonalNumber() {
+		return personalNumber;
 	}
 
-	public void setPeronsalNumber(Long peronsalNumber) {
-		this.peronsalNumber = peronsalNumber;
+	public void setPersonalNumber(Long personalNumber) {
+		this.personalNumber = personalNumber;
 	}
 
 	public String getNameCompany() {
@@ -89,6 +95,7 @@ public class EmployeeDto {
 	public void setState(Integer state) {
 		this.state = state;
 	}
+
 	
 	
 }

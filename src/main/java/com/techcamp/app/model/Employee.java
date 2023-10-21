@@ -4,8 +4,13 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.techcamp.app.dto.EmployeeDto;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.ColumnResult;
+import jakarta.persistence.ConstructorResult;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -13,13 +18,49 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedNativeQuery;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.SqlResultSetMapping;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
+
+
+@NamedNativeQuery(
+    name = "getEmployeesDto",
+    query =
+    		"SELECT e.name_person as namePerson, "
+    		+ "e.lastname as lastname, "
+    		+ "e.personal_number as personalNumber, "
+    		+ "com.name_company as nameCompany, "
+			+ "cha.name_charge as nameCharge, e.salary, e.email, e.state "
+			+ "FROM employees E "
+			+ "INNER JOIN charges CHA ON e.charge_fk = cha.charge_id "
+			+ "INNER JOIN companies COM ON e.company_fk = com.company_id",
+    resultSetMapping = "getEmployeesDto_mapping"
+)
+
+@SqlResultSetMapping(
+	name = "getEmployeesDto_mapping",
+	classes = {
+		@ConstructorResult(
+			targetClass = EmployeeDto.class,
+			columns = {
+				@ColumnResult(name="namePerson", type= String.class),
+				@ColumnResult(name="lastname", type= String.class),
+				@ColumnResult(name="personalNumber", type= Long.class),
+				@ColumnResult(name="nameCompany", type= String.class),
+				@ColumnResult(name="nameCharge", type= String.class),
+				@ColumnResult(name="salary", type= BigDecimal.class),
+				@ColumnResult(name="email", type= String.class),
+				@ColumnResult(name="state", type= Integer.class)
+			}
+		)
+	}
+)
 
 @Entity
 @Table(name = "employees")
@@ -53,14 +94,17 @@ public class Employee implements Serializable {
     @Column(name = "state")
     private Integer state;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "charge_fk")
     private Charge charge;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_fk")
     private Company company;
     
+    @JsonIgnore
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Payment> payments;
 
