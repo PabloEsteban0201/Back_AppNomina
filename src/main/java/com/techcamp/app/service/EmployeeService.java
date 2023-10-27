@@ -21,5 +21,12 @@ public interface EmployeeService {
 	
 	public Optional<Employee> findById(Long id);
 	
+	//TODO: Use pagination
 	public Iterable<EmployeeDto> getEmployeesDto();
+	
+	public Iterable<EmployeeDto> getPaginatedEmployeesDto(int pageIndex, int pageSize);
+	
+	public Employee save(Employee employee);
+	
+	
 }

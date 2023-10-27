@@ -46,4 +46,10 @@ public class CompanyServiceImpl implements CompanyService {
 		return companyRepo.getCompanyByEmployeeId(employeeId);
 	}
 
+	@Override
+	public Optional<Company> findByNameCompany(String nameCompany) {
+		// TODO Auto-generated method stub
+		return companyRepo.findByNameCompany(nameCompany);
+	}
+
 }

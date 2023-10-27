@@ -10,14 +10,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.techcamp.app.dto.EmployeeDto;
+import com.techcamp.app.model.Charge;
+import com.techcamp.app.model.Company;
 import com.techcamp.app.model.Employee;
+import com.techcamp.app.service.ChargeService;
+import com.techcamp.app.service.CompanyService;
 import com.techcamp.app.service.EmployeeService;
 
 @RestController
@@ -26,6 +33,12 @@ public class EmployeeController {
 	
 	@Autowired
 	private EmployeeService employeeService;
+	
+	@Autowired
+	private CompanyService compService;
+	
+	@Autowired
+	private ChargeService chargeService;
 	
 	//Get the name of the company by the employee
 	@GetMapping("/getCompany/{id}")
@@ -64,8 +77,7 @@ public class EmployeeController {
 		return employees;
 	}
 	
-	//Read the employees using a DTO
-	
+	//Read all the employees using a DTO
 	@GetMapping("/employeeDto")
 	public List<EmployeeDto> readEmployeesDto(){
 		
@@ -77,7 +89,21 @@ public class EmployeeController {
 		
 	}
 	
-	//Read all currencies using pagination
+	@GetMapping("/employeeDto/page/{pageNo}/{pageSize}")
+	public List<EmployeeDto> getPaginatedEmployeesDto(@PathVariable int pageNo, 
+			@PathVariable int pageSize){
+		
+		
+		List<EmployeeDto> employeesDto = StreamSupport.
+				stream(employeeService.getPaginatedEmployeesDto(pageNo, pageSize).spliterator(), false).
+				collect(Collectors.toList());
+		
+		
+		return employeesDto;
+	}
+	
+	
+	//Read all employees using pagination
 	//The index of the page begin with 0
 	@GetMapping("/page/{pageNo}/{pageSize}")
 	public List<Employee> getPaginatedEmployees(@PathVariable int pageNo, 
@@ -91,7 +117,7 @@ public class EmployeeController {
 	}
 	
 	
-	//Read currencies by id
+	//Read employees by id
 	@GetMapping("/{id}")
 	public ResponseEntity<Employee> readEmployeeById(@PathVariable(value="id")Long id){
 		Optional<Employee> oEmployee = employeeService.findById(id);
@@ -104,5 +130,24 @@ public class EmployeeController {
 		
 	}
 	
+	//create a client
+	@PostMapping
+	public ResponseEntity<?> create(@RequestBody EmployeeDto employDto){
+		
+		
+		//First create object company and object charge
+		Charge chargeEmploy = chargeService.findByNameCharge(employDto.getNameCharge()).get();
+		
+		Company compEmploy =  compService.findByNameCompany(employDto.getNameCompany()).get();
+		
+		//Second create the employee
+		Employee newEmployee = new Employee(employDto.getPersonalNumber(), employDto.getNamePerson(), 
+				employDto.getLastname(), employDto.getSalary(), employDto.getEmail(), employDto.getState(), chargeEmploy, compEmploy);
+		
+		return ResponseEntity.status(HttpStatus.CREATED).body(employeeService.save(newEmployee));
+	}
+	
 
 }
+
+

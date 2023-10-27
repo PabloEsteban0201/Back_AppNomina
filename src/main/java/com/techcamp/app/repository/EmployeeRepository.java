@@ -11,6 +11,8 @@ import com.techcamp.app.dto.EmployeeDto;
 import com.techcamp.app.model.Employee;
 
 
+
+
 public interface EmployeeRepository extends JpaRepository<Employee, Long>{
 	
 	@Query(
@@ -28,5 +30,11 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long>{
 	
 	@Query(name="getEmployeesDto",nativeQuery = true)
 	List<EmployeeDto> getEmployeesDto();
+	
+	
+	@Query(name="getPageEmployeesDto",nativeQuery = true)
+	List<EmployeeDto> getPaginatedEmployeesDto(@Param("pageIndex") int pageIndex, 
+			@Param("pageSize") int pageSize );
+	
 	
 }

@@ -1,6 +1,7 @@
 package com.techcamp.app.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,5 +18,7 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
 					+ "E.company_fk LIKE COMP.company_id",
 			nativeQuery=true)
 	List<Company> getCompanyByEmployeeId(@Param("id_employee") Long id_employee);
+	
+	public Optional<Company> findByNameCompany(String nameCompany);
 
 }

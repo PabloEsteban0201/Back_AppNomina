@@ -17,6 +17,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+
 @AllArgsConstructor
 @NoArgsConstructor
 
@@ -74,6 +75,11 @@ public class Company implements Serializable {
 
 	public void setEmployees(List<Employee> employees) {
 		this.employees = employees;
+	}
+
+	@Override
+	public String toString() {
+		return "Company [companyId=" + companyId + ", nameCompany=" + nameCompany + "]";
 	}
 
 	

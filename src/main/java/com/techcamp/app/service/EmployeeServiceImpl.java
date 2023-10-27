@@ -51,10 +51,29 @@ public class EmployeeServiceImpl implements EmployeeService{
 	}
 
 	@Override
+	@Transactional(readOnly=true)	
 	public Iterable<EmployeeDto> getEmployeesDto() {
 		
 		return employeeRepo.getEmployeesDto();
 	}
+
+	@Override
+	@Transactional
+	public Employee save(Employee employee) {
+		
+		return employeeRepo.save(employee);
+	}
+
+	@Override
+	@Transactional(readOnly=true)	
+	public Iterable<EmployeeDto> getPaginatedEmployeesDto(int pageIndex, int pageSize) {
+		
+		return employeeRepo.getPaginatedEmployeesDto(pageIndex, pageSize);
+	}
+	
+	
+	
+	
 	
 	
 }

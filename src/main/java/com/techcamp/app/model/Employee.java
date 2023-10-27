@@ -25,8 +25,6 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
-@NoArgsConstructor
 
 
 @NamedNativeQuery(
@@ -62,6 +60,42 @@ import lombok.NoArgsConstructor;
 	}
 )
 
+@NamedNativeQuery(
+    name = "getPageEmployeesDto",
+    query =
+    		"SELECT e.name_person as namePerson, "
+    		+ "e.lastname as lastname, "
+    		+ "e.personal_number as personalNumber, "
+    		+ "com.name_company as nameCompany, "
+			+ "cha.name_charge as nameCharge, e.salary, e.email, e.state "
+			+ "FROM employees E "
+			+ "INNER JOIN charges CHA ON e.charge_fk = cha.charge_id "
+			+ "INNER JOIN companies COM ON e.company_fk = com.company_id "
+			+ "order by e.employee_id OFFSET (:pageIndex * :pageSize) ROWS FETCH NEXT :pageSize ROWS ONLY",
+    resultSetMapping = "getPageEmployeesDto_mapping"
+)
+
+@SqlResultSetMapping(
+	name = "getPageEmployeesDto_mapping",
+	classes = {
+		@ConstructorResult(
+			targetClass = EmployeeDto.class,
+			columns = {
+				@ColumnResult(name="namePerson", type= String.class),
+				@ColumnResult(name="lastname", type= String.class),
+				@ColumnResult(name="personalNumber", type= Long.class),
+				@ColumnResult(name="nameCompany", type= String.class),
+				@ColumnResult(name="nameCharge", type= String.class),
+				@ColumnResult(name="salary", type= BigDecimal.class),
+				@ColumnResult(name="email", type= String.class),
+				@ColumnResult(name="state", type= Integer.class)
+			}
+		)
+	}
+)
+
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "employees")
 public class Employee implements Serializable {
@@ -188,7 +222,22 @@ public class Employee implements Serializable {
 		this.payments = payments;
 	}
 
+	public Employee(Long personalNumber, String namePerson, String lastname, BigDecimal salary, String email,
+			Integer state, Charge charge, Company company) {
+		super();
+		this.personalNumber = personalNumber;
+		this.namePerson = namePerson;
+		this.lastname = lastname;
+		this.salary = salary;
+		this.email = email;
+		this.state = state;
+		this.charge = charge;
+		this.company = company;
+	}
+
 	
 
     
 }
+
+

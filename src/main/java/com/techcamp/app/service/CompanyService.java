@@ -19,4 +19,6 @@ public interface CompanyService {
 	public Optional<Company> findById(Long id);
 	
 	public List<Company> getCompanyByEmployeeId(Long employeeId);
+	
+	public Optional<Company> findByNameCompany(String nameCompany);
 }
