@@ -235,6 +235,10 @@ public class Employee implements Serializable {
 		this.company = company;
 	}
 
+	public Employee() {
+		super();
+	}
+
 	
 
     

@@ -46,6 +46,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 	}
 
 	@Override
+	@Transactional(readOnly=true)	
 	public String getChargeNameByEmployeeId(Long employeeId) {
 		return employeeRepo.getChargeNameByEmployeeId(employeeId);
 	}
@@ -69,6 +70,21 @@ public class EmployeeServiceImpl implements EmployeeService{
 	public Iterable<EmployeeDto> getPaginatedEmployeesDto(int pageIndex, int pageSize) {
 		
 		return employeeRepo.getPaginatedEmployeesDto(pageIndex, pageSize);
+	}
+
+	@Override
+	@Transactional
+	public Optional<Employee> findByPersonalNumber(Long personalNumber) {
+		
+		return employeeRepo.findByPersonalNumber(personalNumber);
+	}
+
+	@Override
+	@Transactional
+	public void deleteById(Long id) {
+		
+		employeeRepo.deleteById(id);
+		
 	}
 	
 	

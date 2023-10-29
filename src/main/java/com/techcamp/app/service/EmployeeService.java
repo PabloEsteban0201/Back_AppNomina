@@ -28,5 +28,8 @@ public interface EmployeeService {
 	
 	public Employee save(Employee employee);
 	
+	public Optional<Employee> findByPersonalNumber(Long personalNumber);
+	
+	public void deleteById(Long id);
 	
 }
