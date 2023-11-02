@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -35,9 +37,10 @@ public class TypeConcept implements Serializable {
     @Column(name = "rate")
     private BigDecimal rate;
 
-    @Column(name = "type")
-    private String type;
+    @Column(name = "name_type")
+    private String nameType;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "typeConcept", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PaymentConcept> paymentConcepts = new ArrayList<>();
 
@@ -65,12 +68,12 @@ public class TypeConcept implements Serializable {
 		this.rate = rate;
 	}
 
-	public String getType() {
-		return type;
+	public String getNameType() {
+		return nameType;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setNameType(String type) {
+		this.nameType = type;
 	}
 
 	public List<PaymentConcept> getPaymentConcepts() {

@@ -39,4 +39,24 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long>{
 	
 	Optional<Employee> findByPersonalNumber(Long personalNumber);
 	
+	
+	@Query(value="select e.employee_id, e.personal_number ,e.name_person, e.lastname, e.salary, e.email, e.state, "
+			+ "e.charge_fk, e.company_fk "
+			+ " from employees E "
+			+ "inner join payments P on e.employee_id = p.employee_fk "
+			+ "where "
+			+ "e.company_fk = :companyId", nativeQuery=true)
+	List<Employee> getEmployeesPayedByCompanyId(@Param("companyId") Long companyId);
+	
+	@Query(value="select e.employee_id, e.personal_number ,e.name_person, e.lastname, e.salary, e.email, e.state, "
+			+ "e.charge_fk, e.company_fk "
+			+ " from employees E "
+			+ "inner join payments P on e.employee_id = p.employee_fk "
+			+ "where "
+			+ "e.charge_fk = :chargeId and "
+			+ "e.company_fk = :companyId", nativeQuery=true)
+	List<Employee> getEmployeesPayedByCompanyIdAndChargeId(@Param("chargeId") Long chargeId, @Param("companyId") Long companyId);
+	
+	
+	
 }

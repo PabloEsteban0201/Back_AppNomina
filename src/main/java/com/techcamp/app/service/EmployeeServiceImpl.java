@@ -73,7 +73,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 	}
 
 	@Override
-	@Transactional
+	@Transactional(readOnly=true)
 	public Optional<Employee> findByPersonalNumber(Long personalNumber) {
 		
 		return employeeRepo.findByPersonalNumber(personalNumber);
@@ -86,6 +86,21 @@ public class EmployeeServiceImpl implements EmployeeService{
 		employeeRepo.deleteById(id);
 		
 	}
+
+	@Override
+	@Transactional(readOnly=true)
+	public Iterable<Employee> getEmployeesPayedByCompanyId(Long companyId) {
+		
+		return employeeRepo.getEmployeesPayedByCompanyId(companyId);
+	}
+
+	@Override
+	@Transactional(readOnly=true)
+	public Iterable<Employee> getEmployeesPayedByCompanyIdAndChargeId(Long companyId, Long chargeId) {
+		
+		return employeeRepo.getEmployeesPayedByCompanyIdAndChargeId(chargeId,companyId);
+	}
+	
 	
 	
 	

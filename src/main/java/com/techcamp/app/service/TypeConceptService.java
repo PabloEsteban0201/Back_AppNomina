@@ -4,8 +4,10 @@ import com.techcamp.app.model.TypeConcept;
 
 public interface TypeConceptService {
 
-	public Iterable<TypeConcept> findByType(String type);
+	public Iterable<TypeConcept> findByNameType(String type);
 	
 	public Iterable<TypeConcept> findAll();
+	
+	public TypeConcept findByNameConcept(String nameConcept);
 	
 }

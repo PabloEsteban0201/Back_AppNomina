@@ -46,8 +46,8 @@ public class Payment implements Serializable {
     @Column(name = "total_benefits")
     private BigDecimal totalBenefits;
 
-    @Column(name = "total_retentios")
-    private BigDecimal totalRetentios;
+    @Column(name = "total_retentions")
+    private BigDecimal totalRetentions;
 
     @Column(name = "total_licenses")
     private BigDecimal totalLicenses;
@@ -60,6 +60,13 @@ public class Payment implements Serializable {
 
     @Column(name = "period")
     private Integer period;
+    
+    /**
+     * 1 for finished
+     * 0 for in process
+     */
+    @Column(name = "finished")
+    private Integer finished;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_fk")
@@ -96,12 +103,12 @@ public class Payment implements Serializable {
 		this.totalBenefits = totalBenefits;
 	}
 
-	public BigDecimal getTotalRetentios() {
-		return totalRetentios;
+	public BigDecimal getTotalRetentions() {
+		return totalRetentions;
 	}
 
-	public void setTotalRetentios(BigDecimal totalRetentios) {
-		this.totalRetentios = totalRetentios;
+	public void setTotalRetentions(BigDecimal totalRetentios) {
+		this.totalRetentions = totalRetentios;
 	}
 
 	public BigDecimal getTotalLicenses() {
@@ -158,6 +165,14 @@ public class Payment implements Serializable {
 
 	public void setPaymentConcepts(List<PaymentConcept> paymentConcepts) {
 		this.paymentConcepts = paymentConcepts;
+	}
+
+	public Integer getFinished() {
+		return finished;
+	}
+
+	public void setFinished(Integer finished) {
+		this.finished = finished;
 	}
 
 	

@@ -14,16 +14,24 @@ public class TypeConceptServiceImpl implements TypeConceptService {
 	private TypeConceptRepository typeConceptRepo;
 	
 	@Override
-	@Transactional
-	public Iterable<TypeConcept> findByType(String type) {
+	@Transactional(readOnly = true)
+	public Iterable<TypeConcept> findByNameType(String type) {
 		
-		return typeConceptRepo.findByType(type);
+		return typeConceptRepo.findByNameType(type);
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Iterable<TypeConcept> findAll() {
 		
 		return typeConceptRepo.findAll();
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public TypeConcept findByNameConcept(String nameConcept) {
+		
+		return typeConceptRepo.findByNameConcept(nameConcept);
 	}
 
 }

@@ -32,4 +32,9 @@ public interface EmployeeService {
 	
 	public void deleteById(Long id);
 	
+	public Iterable<Employee> getEmployeesPayedByCompanyId(Long companyId);
+	
+	public Iterable<Employee> getEmployeesPayedByCompanyIdAndChargeId(Long companyId, Long chargeId);
+
+	
 }

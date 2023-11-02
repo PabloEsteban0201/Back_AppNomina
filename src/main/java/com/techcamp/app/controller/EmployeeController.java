@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +32,7 @@ import com.techcamp.app.service.EmployeeService;
 
 @RestController
 @RequestMapping("/employee")
+@CrossOrigin(origins = "*")
 public class EmployeeController {
 	
 	@Autowired
@@ -194,6 +196,38 @@ public class EmployeeController {
 		employeeService.deleteById(employee.get().getEmployeeId());
 		return ResponseEntity.ok().build();
 	}
+	
+	//Read all the employees using a DTO
+	@GetMapping("/employeesPayed/{companyId}")
+	public List<Employee> readEmployeesPayedByCompanyId(@PathVariable Long companyId){
+		
+		List<Employee> employeesPayed = StreamSupport.
+				stream(employeeService.getEmployeesPayedByCompanyId(companyId).spliterator(), false).
+				collect(Collectors.toList());
+		
+		
+		return employeesPayed;
+		
+	}
+	
+	
+	//Read all the employees using a DTO
+	@GetMapping("/employeesPayed/{companyId}/{chargeId}")
+	public ResponseEntity<?> readEmployeesPayedByCompanyIdAndChargeId(@PathVariable Long companyId, @PathVariable Long chargeId){
+		
+		List<Employee> employeesPayed = StreamSupport.
+				stream(employeeService.getEmployeesPayedByCompanyIdAndChargeId(companyId, chargeId).spliterator(), false).
+				collect(Collectors.toList());
+		
+		if(employeesPayed.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+		
+		
+		return ResponseEntity.status(HttpStatus.CREATED).body(employeesPayed);
+		
+	}
+	
 }
 
 
