@@ -15,4 +15,12 @@ public interface TypeConceptService {
 	
 	public Iterable<ConceptsDto> getConceptsDtoByPaymentId(Long paymentId);
 	
+	public Iterable<String> getAllNameBenefits();
+	
+	public Iterable<String> getAllNameTaxes();
+	
+	public Iterable<String> getAllNameLicenses();
+	
+	public Iterable<String> getAllNameRetentions();
+	
 }

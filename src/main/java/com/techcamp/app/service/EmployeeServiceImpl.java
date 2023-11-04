@@ -11,16 +11,23 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.techcamp.app.dto.AssignConceptEmployeeDto;
 import com.techcamp.app.dto.EmployeeDto;
+import com.techcamp.app.dto.LiquidateEmployeeDto;
+import com.techcamp.app.dto.RequestLiquidationDto;
 import com.techcamp.app.model.Employee;
 import com.techcamp.app.model.Payment;
 import com.techcamp.app.repository.EmployeeRepository;
+import com.techcamp.app.repository.TypeConceptRepository;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService{
 
 	@Autowired
 	private EmployeeRepository employeeRepo;
+	
+	@Autowired
+	private TypeConceptRepository typeConceptRepo;
 	
 	@Override
 	@Transactional(readOnly=true)
@@ -107,18 +114,26 @@ public class EmployeeServiceImpl implements EmployeeService{
 
 	@Override
 	@Transactional(readOnly=true)
-	public Iterable<EmployeeDto> getEmployeesDtoSelected(List<Long> personalNumbers) {
+	public Iterable<AssignConceptEmployeeDto> getAssignConceptEmployeeDtoSelected(List<Long> personalNumbers) {
 		
 		
-		List<EmployeeDto> employeesSelected = new ArrayList<EmployeeDto>();
+		List<AssignConceptEmployeeDto> employeesSelected = new ArrayList<AssignConceptEmployeeDto>();
 		
 		for (int i = 0; i < personalNumbers.size(); i++) {
 			
 			if(employeeRepo.findByPersonalNumber(personalNumbers.get(i)).isPresent()) {
 				
 				if(this.checkPayInProcess(personalNumbers.get(i))) {
-					employeesSelected.add(employeeRepo.
-							getEmployeesDtoSelected(personalNumbers.get(i)).get());
+					
+					AssignConceptEmployeeDto employee = 
+							employeeRepo.getAssignConceptEmployeeDto(personalNumbers.get(i)).get();
+					
+					employee.setNameBenefits(typeConceptRepo.getAllNameBenefits());
+					employee.setNameLicenses(typeConceptRepo.getAllNameLicenses());
+					employee.setNameTaxes(typeConceptRepo.getAllNameTaxes());;
+					employee.setNameRetentions(typeConceptRepo.getAllNameRetentions());
+					
+					employeesSelected.add(employee);
 				}
 			}
 			
@@ -145,6 +160,36 @@ public class EmployeeServiceImpl implements EmployeeService{
 		}
 		
 		return true;
+	}
+
+	@Override
+	@Transactional(readOnly=true)
+	public Iterable<LiquidateEmployeeDto> getEmployeesLiquidation(List<RequestLiquidationDto> liquidationPS) {
+		
+		List<LiquidateEmployeeDto> employeesLiquidations = new ArrayList<LiquidateEmployeeDto>();
+		
+		for(int i=0;i<liquidationPS.size();i++) {
+			
+			LiquidateEmployeeDto employee = employeeRepo.getLiquidationDto(liquidationPS.get(i).getPersonalNumber()).get();
+			
+			employee.setBenefits(typeConceptRepo.getBenefitsConceptsDtoByPaymentId(liquidationPS.get(i).getPaymentId()));
+			employee.setLicenses(typeConceptRepo.getLicensesConceptsDtoByPaymentId(liquidationPS.get(i).getPaymentId()));
+			employee.setTaxes(typeConceptRepo.getTaxesConceptsDtoByPaymentId(liquidationPS.get(i).getPaymentId()));
+			employee.setRetentions(typeConceptRepo.getRetentionsConceptsDtoByPaymentId(liquidationPS.get(i).getPaymentId()));
+			
+			employeesLiquidations.add(employee);
+			
+		}
+		
+		
+		return employeesLiquidations;
+	}
+
+	@Override
+	@Transactional(readOnly=true)
+	public Optional<EmployeeDto> getEmployeeDtoByPersonalNumber(Long personalNumber) {
+		
+		return employeeRepo.getEmployeesDtoSelected(personalNumber);
 	}
 	
 	

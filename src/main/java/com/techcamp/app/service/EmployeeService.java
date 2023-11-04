@@ -6,7 +6,10 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.techcamp.app.dto.AssignConceptEmployeeDto;
 import com.techcamp.app.dto.EmployeeDto;
+import com.techcamp.app.dto.LiquidateEmployeeDto;
+import com.techcamp.app.dto.RequestLiquidationDto;
 import com.techcamp.app.model.Employee;
 
 
@@ -36,8 +39,16 @@ public interface EmployeeService {
 	
 	public Iterable<Employee> getEmployeesPayedByCompanyIdAndChargeId(Long companyId, Long chargeId);
 
-	public Iterable<EmployeeDto> getEmployeesDtoSelected(List<Long> personalNumbers);
+	public Iterable<AssignConceptEmployeeDto> getAssignConceptEmployeeDtoSelected(List<Long> personalNumbers);
 	
 	public Boolean checkPayInProcess(Long employeeId);
 	
+	public Iterable<LiquidateEmployeeDto> getEmployeesLiquidation(List<RequestLiquidationDto> liquidationPS);
+	
+	/**
+	 * Find the EmployeeDto by the personalNumber
+	 * @param personalNumber Long of an employee
+	 * @return EmployeeDto
+	 */
+	public Optional<EmployeeDto> getEmployeeDtoByPersonalNumber(Long personalNumber);
 }

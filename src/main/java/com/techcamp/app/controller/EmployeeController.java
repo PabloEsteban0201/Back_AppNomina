@@ -230,6 +230,24 @@ public class EmployeeController {
 	
 	
 	
+	/**
+	 * Get the employeeDto by the personalNumber
+	 * @param id
+	 * @return
+	 */
+	@GetMapping("/employeeDto/{id}")
+	public ResponseEntity<EmployeeDto> getEmployeeDtoByPersonalNumber(@PathVariable(value="id")Long id){
+		Optional<EmployeeDto> oEmployee = employeeService.getEmployeeDtoByPersonalNumber(id);
+		//Handle error
+		if(!oEmployee.isPresent()) {
+			return ResponseEntity.notFound().build();
+		}
+		
+		return ResponseEntity.ok(oEmployee.get());
+		
+	}
+	
+	
 	
 }
 

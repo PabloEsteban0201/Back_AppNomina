@@ -5,7 +5,9 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.techcamp.app.dto.AssignConceptEmployeeDto;
 import com.techcamp.app.dto.EmployeeDto;
+import com.techcamp.app.dto.LiquidateEmployeeDto;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -128,6 +130,63 @@ import lombok.NoArgsConstructor;
 			)
 		}
 	)
+
+@NamedNativeQuery(
+	    name = "getAssignConceptEmployeeDto",
+	    query =
+	    		"SELECT e.name_person as namePerson, "
+	    		+ "e.lastname as lastname, "
+	    		+ "e.personal_number as personalNumber, "
+	    		+ "com.name_company as nameCompany "
+				+ "FROM employees E "
+				+ "INNER JOIN companies COM ON e.company_fk = com.company_id and "
+				+ "e.personal_number = :personal_number ",
+	    resultSetMapping = "getAssignConceptEmployeeDto_mapping"
+	)
+
+	@SqlResultSetMapping(
+		name = "getAssignConceptEmployeeDto_mapping",
+		classes = {
+			@ConstructorResult(
+				targetClass = AssignConceptEmployeeDto.class,
+				columns = {  
+					@ColumnResult(name="namePerson", type= String.class),
+					@ColumnResult(name="lastname", type= String.class),
+					@ColumnResult(name="personalNumber", type= Long.class),
+					@ColumnResult(name="nameCompany", type= String.class)
+				}
+			)
+		}
+	)
+
+@NamedNativeQuery(
+	    name = "getLiquidationDto",
+	    query =
+	    		"SELECT e.name_person as namePerson, "
+	    		+ "e.lastname as lastname, "
+	    		+ "e.personal_number as personalNumber, "
+	    		+ "e.salary as salary "
+				+ "FROM employees E "
+				+ "where "
+				+ "e.personal_number = :personal_number ",
+	    resultSetMapping = "getLiquidationDto_mapping"
+	)
+
+	@SqlResultSetMapping(
+		name = "getLiquidationDto_mapping",
+		classes = {
+			@ConstructorResult(
+				targetClass = LiquidateEmployeeDto.class,
+				columns = {  
+					@ColumnResult(name="namePerson", type= String.class),
+					@ColumnResult(name="lastname", type= String.class),
+					@ColumnResult(name="personalNumber", type= Long.class),
+					@ColumnResult(name="salary", type= BigDecimal.class)
+				}
+			)
+		}
+	)
+
 
 @AllArgsConstructor
 @NoArgsConstructor

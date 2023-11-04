@@ -1,6 +1,7 @@
 package com.techcamp.app.dto;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -11,6 +12,8 @@ import lombok.NoArgsConstructor;
 public class PaymentDetailsDto {
 
 	private Long paymentId;
+	
+	private Date payDate;
 	
 	private String namePerson;
 	
@@ -100,8 +103,18 @@ public class PaymentDetailsDto {
 		this.payConcepts = payConcepts;
 	}
 
+	
+	
+	public Date getPayDate() {
+		return payDate;
+	}
+
+	public void setPayDate(Date payDate) {
+		this.payDate = payDate;
+	}
+
 	public PaymentDetailsDto(Long paymentId, String namePerson, String lastname, Long personalNumber, BigDecimal salary,
-			BigDecimal discounts, BigDecimal additions, BigDecimal total) {
+			BigDecimal discounts, BigDecimal additions, BigDecimal total, Date payDate) {
 		super();
 		this.paymentId = paymentId;
 		this.namePerson = namePerson;
@@ -111,6 +124,7 @@ public class PaymentDetailsDto {
 		this.discounts = discounts;
 		this.additions = additions;
 		this.total = total;
+		this.payDate=payDate;
 	}
 
 	

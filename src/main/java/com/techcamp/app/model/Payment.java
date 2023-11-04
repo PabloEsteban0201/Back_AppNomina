@@ -70,7 +70,7 @@ import lombok.NoArgsConstructor;
 	    		+ "e.salary as salary, "
 	    		+ "p.total_retentions + p.total_taxes as discounts, "
 	    		+ "p.total_benefits+p.total_licenses as additions, "
-	    		+ "p.total as total "
+	    		+ "p.total as total, p.pay_date as payDate "
 	    		+ "from employees E inner join payments P ON e.employee_id = p.employee_fk  "
 	    		+ "where e.personal_number = :personal_number",
 	    resultSetMapping = "getPaymentDetailsDtoByEmployee_mapping"
@@ -89,7 +89,8 @@ import lombok.NoArgsConstructor;
 					@ColumnResult(name="salary", type= BigDecimal.class),
 					@ColumnResult(name="discounts", type= BigDecimal.class),
 					@ColumnResult(name="additions", type= BigDecimal.class),
-					@ColumnResult(name="total", type= BigDecimal.class)
+					@ColumnResult(name="total", type= BigDecimal.class),
+					@ColumnResult(name="payDate", type= Date.class)
 				}
 			)
 		}

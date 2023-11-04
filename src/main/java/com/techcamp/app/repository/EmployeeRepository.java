@@ -8,7 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.techcamp.app.dto.AssignConceptEmployeeDto;
 import com.techcamp.app.dto.EmployeeDto;
+import com.techcamp.app.dto.LiquidateEmployeeDto;
 import com.techcamp.app.model.Employee;
 
 
@@ -58,13 +60,23 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long>{
 	List<Employee> getEmployeesPayedByCompanyIdAndChargeId(@Param("chargeId") Long chargeId, @Param("companyId") Long companyId);
 	
 	/**
-	 * Get the employees selected in the main view
+	 * Get the EmployeeDto by the personal number given
 	 * @param personalNumber the personal number of the employee
 	 * @return EmployeeDto
 	 */
 	@Query(name="getEmployeesDtoSelected",nativeQuery = true)
 	Optional<EmployeeDto> getEmployeesDtoSelected(@Param("personal_number") Long personalNumber);
 	
+	/**
+	 * Get the employees selected by the AssignConceptEmployeeDto
+	 * @param personalNumber the personal number of the employee
+	 * @return AssignConceptEmployeeDto
+	 */
+	@Query(name="getAssignConceptEmployeeDto",nativeQuery = true)
+	Optional<AssignConceptEmployeeDto> getAssignConceptEmployeeDto(@Param("personal_number") Long personalNumber);
+	
+	@Query(name="getLiquidationDto", nativeQuery = true)
+	Optional<LiquidateEmployeeDto> getLiquidationDto(@Param("personal_number") Long personalNumber);
 	
 	
 }

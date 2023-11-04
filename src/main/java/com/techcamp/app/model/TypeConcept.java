@@ -43,6 +43,94 @@ import lombok.NoArgsConstructor;
 		}
 	)
 
+@NamedNativeQuery(
+	    name = "getBenefitsConceptsDto",
+	    query =
+	    		"select pc.amount, tc.name_concept as nameConcept from paymentconcepts PC "
+	    		+ "inner join type_concept TC ON pc.type_concept_fk = tc.concept_id "
+	    		+ "where pc.payment_fk=:payment_id and tc.name_type='PRESTACIONES' ",
+	    resultSetMapping = "getBenefitsConceptsDto_mapping"
+	)
+
+@SqlResultSetMapping(
+		name = "getBenefitsConceptsDto_mapping",
+		classes = {
+			@ConstructorResult(
+				targetClass = ConceptsDto.class,
+				columns = {
+					@ColumnResult(name="amount", type= BigDecimal.class),
+					@ColumnResult(name="nameConcept", type= String.class)
+				}
+			)
+		}
+	)
+
+@NamedNativeQuery(
+	    name = "getLicensesConceptsDto",
+	    query =
+	    		"select pc.amount, tc.name_concept as nameConcept from paymentconcepts PC "
+	    		+ "inner join type_concept TC ON pc.type_concept_fk = tc.concept_id "
+	    		+ "where pc.payment_fk=:payment_id and tc.name_type='LICENCIAS' ",
+	    resultSetMapping = "getLicensesConceptsDto_mapping"
+	)
+
+@SqlResultSetMapping(
+		name = "getLicensesConceptsDto_mapping",
+		classes = {
+			@ConstructorResult(
+				targetClass = ConceptsDto.class,
+				columns = {
+					@ColumnResult(name="amount", type= BigDecimal.class),
+					@ColumnResult(name="nameConcept", type= String.class)
+				}
+			)
+		}
+	)
+
+@NamedNativeQuery(
+	    name = "getTaxesConceptsDto",
+	    query =
+	    		"select pc.amount, tc.name_concept as nameConcept from paymentconcepts PC "
+	    		+ "inner join type_concept TC ON pc.type_concept_fk = tc.concept_id "
+	    		+ "where pc.payment_fk=:payment_id and tc.name_type='IMPUESTOS' ",
+	    resultSetMapping = "getTaxesConceptsDto_mapping"
+	)
+
+@SqlResultSetMapping(
+		name = "getTaxesConceptsDto_mapping",
+		classes = {
+			@ConstructorResult(
+				targetClass = ConceptsDto.class,
+				columns = {
+					@ColumnResult(name="amount", type= BigDecimal.class),
+					@ColumnResult(name="nameConcept", type= String.class)
+				}
+			)
+		}
+	)
+
+@NamedNativeQuery(
+	    name = "getRetentionsConceptsDto",
+	    query =
+	    		"select pc.amount, tc.name_concept as nameConcept from paymentconcepts PC "
+	    		+ "inner join type_concept TC ON pc.type_concept_fk = tc.concept_id "
+	    		+ "where pc.payment_fk=:payment_id and tc.name_type='RETENCIONES' ",
+	    resultSetMapping = "getRetentionsConceptsDto_mapping"
+	)
+
+@SqlResultSetMapping(
+		name = "getRetentionsConceptsDto_mapping",
+		classes = {
+			@ConstructorResult(
+				targetClass = ConceptsDto.class,
+				columns = {
+					@ColumnResult(name="amount", type= BigDecimal.class),
+					@ColumnResult(name="nameConcept", type= String.class)
+				}
+			)
+		}
+	)
+
 
 @AllArgsConstructor
 @NoArgsConstructor

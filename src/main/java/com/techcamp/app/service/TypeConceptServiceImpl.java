@@ -1,13 +1,13 @@
 package com.techcamp.app.service;
 
-import java.util.List;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.techcamp.app.dto.ConceptsDto;
-import com.techcamp.app.dto.PaymentDetailsDto;
+
 import com.techcamp.app.model.TypeConcept;
 import com.techcamp.app.repository.TypeConceptRepository;
 
@@ -17,6 +17,9 @@ public class TypeConceptServiceImpl implements TypeConceptService {
 	@Autowired
 	private TypeConceptRepository typeConceptRepo;
 	
+	/**
+	 * Get the TypeConcept by the name "PRESTACIONES" "LICENCIAS" "IMPUESTOS" "RETENCIONES"
+	 */
 	@Override
 	@Transactional(readOnly = true)
 	public Iterable<TypeConcept> findByNameType(String type) {
@@ -50,6 +53,43 @@ public class TypeConceptServiceImpl implements TypeConceptService {
 	public Iterable<ConceptsDto> getConceptsDtoByPaymentId(Long paymentId) {
 		
 		return typeConceptRepo.getConceptsDtoByPaymentId(paymentId);
+	}
+
+	/**
+	 * Get all the names of the benefits
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public Iterable<String> getAllNameBenefits() {
+		
+		return typeConceptRepo.getAllNameBenefits();
+	}
+
+	/**
+	 * Get all the names of the taxes
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public Iterable<String> getAllNameTaxes() {
+		return typeConceptRepo.getAllNameTaxes();
+	}
+
+	/**
+	 * Get all the names of the licenses
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public Iterable<String> getAllNameLicenses() {
+		return typeConceptRepo.getAllNameLicenses();
+	}
+
+	/**
+	 * Get all the names of the retentions
+	 */
+	@Override
+	@Transactional(readOnly = true)
+	public Iterable<String> getAllNameRetentions() {
+		return typeConceptRepo.getAllNameRetentions();
 	}
 
 	

@@ -51,7 +51,7 @@ public class TypeConceptController {
 		return types;
 	}
 	
-	//TODO realizar para una lista de BenefisLicensesDto
+	//TODO remove this
 	@GetMapping("/getSelected")
 	public List<TypeConcept> readByNameConcept(@RequestBody BenefitsLicensesDto benLinDto){
 		
