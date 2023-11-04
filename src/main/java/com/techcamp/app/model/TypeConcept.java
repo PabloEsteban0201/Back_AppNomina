@@ -6,19 +6,46 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.techcamp.app.dto.ConceptsDto;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.ColumnResult;
+import jakarta.persistence.ConstructorResult;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.NamedNativeQuery;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.SqlResultSetMapping;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+@NamedNativeQuery(
+	    name = "getConceptsDto",
+	    query =
+	    		"select pc.amount as amount, tc.name_concept as nameConcept  from paymentconcepts PC "
+	    		+ "inner join type_concept TC ON pc.type_concept_fk = tc.concept_id "
+	    		+ "where pc.payment_fk= :payment_id ",
+	    resultSetMapping = "getConceptsDto_mapping"
+	)
+
+@SqlResultSetMapping(
+		name = "getConceptsDto_mapping",
+		classes = {
+			@ConstructorResult(
+				targetClass = ConceptsDto.class,
+				columns = {
+					@ColumnResult(name="amount", type= BigDecimal.class),
+					@ColumnResult(name="nameConcept", type= String.class)
+				}
+			)
+		}
+	)
+
+
 @AllArgsConstructor
 @NoArgsConstructor
-
 @Entity
 @Table(name = "type_concept")
 public class TypeConcept implements Serializable {

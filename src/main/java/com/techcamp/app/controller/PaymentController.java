@@ -1,20 +1,26 @@
 package com.techcamp.app.controller;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import com.techcamp.app.dto.PaymentDetailsDto;
 import com.techcamp.app.dto.PaymentEmployeeDto;
+import com.techcamp.app.dto.ReportPaymentDto;
 import com.techcamp.app.model.Employee;
 import com.techcamp.app.model.Payment;
 import com.techcamp.app.model.TypePeriod;
@@ -35,17 +41,19 @@ public class PaymentController {
 	
 	@Autowired
 	private EmployeeService employeeService;
-
+	
+	
 	@PostMapping
 	public ResponseEntity<?> reportPayment(@RequestBody PaymentEmployeeDto paymentDto){
 		
+		List<ReportPaymentDto> reportedPays = new ArrayList<ReportPaymentDto>();
 		
 		List<Long> personalNumbers = paymentDto.getPersonalNumbers();
+	
 		
 		if(personalNumbers.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No personal numbers");
 		}
-		
 		
 		for(int i=0; i<personalNumbers.size();i++) {
 			
@@ -53,30 +61,66 @@ public class PaymentController {
 			if(!oEmplo.isPresent()) {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The employee was not found");
 			}
+			Employee employee = oEmplo.get();
+			
 			
 			Optional<Payment> oPay = paymentService.findPaymentInProcessByEmployeeId(oEmplo.get().getEmployeeId());
 			if(!oPay.isPresent()) {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The employee doesnt have a pay in process");
 			}
-			
+		
 			
 			paymentService.reportPayment(oPay.get().getPaymentId());
-		
+			
+			Payment payFinish = paymentService.findById(oPay.get().getPaymentId()).get();
 			
 			TypePeriod periodPayment = typePeriodService.findByNamePeriod(paymentDto.getCodePeriod()).get();
 			
-			oPay.get().setTypePeriod(periodPayment);
-			
+			payFinish.setTypePeriod(periodPayment);
 			long millis=System.currentTimeMillis();  
+			payFinish.setPayDate(new java.sql.Date(millis));
+			payFinish.setFinished(1);
+			paymentService.save(payFinish);
 			
-			oPay.get().setPayDate(new java.sql.Date(millis));
-			oPay.get().setFinished(1);
-			
-			paymentService.save(oPay.get());
-			
+			reportedPays.add(new ReportPaymentDto(payFinish.getPaymentId(),employee.getNamePerson(),
+					employee.getLastname(),employee.getPersonalNumber(),
+					employee.getSalary(),
+					payFinish.getTotalBenefits(),
+					payFinish.getTotalRetentions(),
+					payFinish.getTotalLicenses(),
+					payFinish.getTotalTaxes(),
+					payFinish.getTotal()));
+					
+		}
+	
+		return ResponseEntity.status(HttpStatus.OK).body(reportedPays);
+	}
+	
+	@GetMapping("/detail/{id}")
+	public ResponseEntity<?> getDetailsPayment(@PathVariable Long id){
+		
+		
+		Optional<PaymentDetailsDto> oPayDetailsDto = paymentService.getPaymentDetailsDto(id);
+		if(!oPayDetailsDto.isPresent()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("The payment was not found");
 		}
 		
-		
-		return ResponseEntity.status(HttpStatus.OK).build();
+		return ResponseEntity.status(HttpStatus.OK).body(oPayDetailsDto.get());
 	}
+	
+	@GetMapping("/detailPayments/{id}")
+	public ResponseEntity<?> getPaymentsDetailsByPersonalNumber(@PathVariable Long id){
+		
+		
+		List<PaymentDetailsDto> payDetails = StreamSupport.
+				stream(paymentService.getPaymentDetailsByPersonalNumber(id).spliterator(), false).
+				collect(Collectors.toList());
+		
+
+		return ResponseEntity.status(HttpStatus.OK).body(payDetails);
+	}
+	
+	
+	
+	
 }

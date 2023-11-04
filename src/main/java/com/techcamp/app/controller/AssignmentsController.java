@@ -1,16 +1,20 @@
 package com.techcamp.app.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.techcamp.app.dto.BenefitsLicensesDto;
+import com.techcamp.app.dto.EmployeeDto;
 import com.techcamp.app.model.Employee;
 import com.techcamp.app.model.Payment;
 import com.techcamp.app.model.PaymentConcept;
@@ -62,6 +66,7 @@ public class AssignmentsController {
 		
 		//Set the employee in the payment
 		pay.setEmployee(emplo);
+		pay.setFinished(0);
 		
 		paymentService.save(pay);
 		
@@ -81,5 +86,23 @@ public class AssignmentsController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(pay);
 	}
 
+	
+	@GetMapping("/getSelectedEmployees")
+	public ResponseEntity<?> getEmployeesSelected(@RequestBody List<Long> personalNumbers){
+		
+		List<EmployeeDto> employeesDto = StreamSupport.
+				stream(employeeService.getEmployeesDtoSelected(personalNumbers).spliterator(), false).
+				collect(Collectors.toList());
+		
+		if(employeesDto.isEmpty()) {
+			return ResponseEntity.notFound().build();
+
+		}
+		
+		return ResponseEntity.status(HttpStatus.CREATED).body(employeesDto);
+	}
+	
+	
+	
 	
 }

@@ -1,5 +1,6 @@
 package com.techcamp.app.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -21,7 +22,6 @@ public interface EmployeeService {
 	
 	public Optional<Employee> findById(Long id);
 	
-	//TODO: Use pagination
 	public Iterable<EmployeeDto> getEmployeesDto();
 	
 	public Iterable<EmployeeDto> getPaginatedEmployeesDto(int pageIndex, int pageSize);
@@ -36,5 +36,8 @@ public interface EmployeeService {
 	
 	public Iterable<Employee> getEmployeesPayedByCompanyIdAndChargeId(Long companyId, Long chargeId);
 
+	public Iterable<EmployeeDto> getEmployeesDtoSelected(List<Long> personalNumbers);
+	
+	public Boolean checkPayInProcess(Long employeeId);
 	
 }

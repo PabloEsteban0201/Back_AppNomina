@@ -6,8 +6,13 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.techcamp.app.dto.PaymentDetailsDto;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.ColumnResult;
+import jakarta.persistence.ConstructorResult;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -15,16 +20,83 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedNativeQuery;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.SqlResultSetMapping;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+@NamedNativeQuery(
+	    name = "getPaymentDetailsDto",
+	    query =
+	    		"select p.payment_id as paymentId, e.name_person as namePerson, "
+	    		+ "e.lastname as lastname, \r\n"
+	    		+ "e.personal_number as personalNumber, "
+	    		+ "e.salary as salary, "
+	    		+ "p.total_retentions + p.total_taxes as discounts, "
+	    		+ "p.total_benefits+p.total_licenses as additions, "
+	    		+ "p.total as total "
+	    		+ "from employees E inner join payments P ON e.employee_id = p.employee_fk  "
+	    		+ "where p.payment_id=:payment_id",
+	    resultSetMapping = "getPaymentDetailsDto_mapping"
+	)
+
+	@SqlResultSetMapping(
+		name = "getPaymentDetailsDto_mapping",
+		classes = {
+			@ConstructorResult(
+				targetClass = PaymentDetailsDto.class,
+				columns = {
+					@ColumnResult(name="paymentId", type= Long.class),
+					@ColumnResult(name="namePerson", type= String.class),
+					@ColumnResult(name="lastname", type= String.class),
+					@ColumnResult(name="personalNumber", type= Long.class),
+					@ColumnResult(name="salary", type= BigDecimal.class),
+					@ColumnResult(name="discounts", type= BigDecimal.class),
+					@ColumnResult(name="additions", type= BigDecimal.class),
+					@ColumnResult(name="total", type= BigDecimal.class)
+				}
+			)
+		}
+	)
+
+@NamedNativeQuery(
+	    name = "getPaymentDetailsDtoByEmployee",
+	    query =
+	    		"select p.payment_id as paymentId, e.name_person as namePerson, "
+	    		+ "e.lastname as lastname,  "
+	    		+ "e.personal_number as personalNumber, "
+	    		+ "e.salary as salary, "
+	    		+ "p.total_retentions + p.total_taxes as discounts, "
+	    		+ "p.total_benefits+p.total_licenses as additions, "
+	    		+ "p.total as total "
+	    		+ "from employees E inner join payments P ON e.employee_id = p.employee_fk  "
+	    		+ "where e.personal_number = :personal_number",
+	    resultSetMapping = "getPaymentDetailsDtoByEmployee_mapping"
+	)
+
+	@SqlResultSetMapping(
+		name = "getPaymentDetailsDtoByEmployee_mapping",
+		classes = {
+			@ConstructorResult(
+				targetClass = PaymentDetailsDto.class,
+				columns = {
+					@ColumnResult(name="paymentId", type= Long.class),
+					@ColumnResult(name="namePerson", type= String.class),
+					@ColumnResult(name="lastname", type= String.class),
+					@ColumnResult(name="personalNumber", type= Long.class),
+					@ColumnResult(name="salary", type= BigDecimal.class),
+					@ColumnResult(name="discounts", type= BigDecimal.class),
+					@ColumnResult(name="additions", type= BigDecimal.class),
+					@ColumnResult(name="total", type= BigDecimal.class)
+				}
+			)
+		}
+	)
+
 @AllArgsConstructor
 @NoArgsConstructor
-
-
-
 @Entity
 @Table(name = "payments")
 public class Payment implements Serializable {
@@ -68,14 +140,17 @@ public class Payment implements Serializable {
     @Column(name = "finished")
     private Integer finished;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_fk")
     private Employee employee;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "type_period_fk")
     private TypePeriod typePeriod;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "payment", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PaymentConcept> paymentConcepts = new ArrayList<>();
 
@@ -173,6 +248,13 @@ public class Payment implements Serializable {
 
 	public void setFinished(Integer finished) {
 		this.finished = finished;
+	}
+
+	@Override
+	public String toString() {
+		return "Payment [paymentId=" + paymentId + ", payDate=" + payDate + ", totalBenefits=" + totalBenefits
+				+ ", totalRetentions=" + totalRetentions + ", totalLicenses=" + totalLicenses + ", totalTaxes="
+				+ totalTaxes + ", total=" + total + ", period=" + period + ", finished=" + finished + "]";
 	}
 
 	

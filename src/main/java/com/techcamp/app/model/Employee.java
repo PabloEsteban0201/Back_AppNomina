@@ -94,6 +94,41 @@ import lombok.NoArgsConstructor;
 	}
 )
 
+
+@NamedNativeQuery(
+	    name = "getEmployeesDtoSelected",
+	    query =
+	    		"SELECT e.name_person as namePerson, "
+	    		+ "e.lastname as lastname, "
+	    		+ "e.personal_number as personalNumber, "
+	    		+ "com.name_company as nameCompany, "
+				+ "cha.name_charge as nameCharge, e.salary, e.email, e.state "
+				+ "FROM employees E "
+				+ "INNER JOIN charges CHA ON e.charge_fk = cha.charge_id "
+				+ "INNER JOIN companies COM ON e.company_fk = com.company_id and "
+				+ "e.personal_number = :personal_number ",
+	    resultSetMapping = "getEmployeesDtoSelected_mapping"
+	)
+
+	@SqlResultSetMapping(
+		name = "getEmployeesDtoSelected_mapping",
+		classes = {
+			@ConstructorResult(
+				targetClass = EmployeeDto.class,
+				columns = {
+					@ColumnResult(name="namePerson", type= String.class),
+					@ColumnResult(name="lastname", type= String.class),
+					@ColumnResult(name="personalNumber", type= Long.class),
+					@ColumnResult(name="nameCompany", type= String.class),
+					@ColumnResult(name="nameCharge", type= String.class),
+					@ColumnResult(name="salary", type= BigDecimal.class),
+					@ColumnResult(name="email", type= String.class),
+					@ColumnResult(name="state", type= Integer.class)
+				}
+			)
+		}
+	)
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity

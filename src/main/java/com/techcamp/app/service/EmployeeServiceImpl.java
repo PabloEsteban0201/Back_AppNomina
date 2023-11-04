@@ -1,5 +1,8 @@
 package com.techcamp.app.service;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.techcamp.app.dto.EmployeeDto;
 import com.techcamp.app.model.Employee;
+import com.techcamp.app.model.Payment;
 import com.techcamp.app.repository.EmployeeRepository;
 
 @Service
@@ -100,6 +104,49 @@ public class EmployeeServiceImpl implements EmployeeService{
 		
 		return employeeRepo.getEmployeesPayedByCompanyIdAndChargeId(chargeId,companyId);
 	}
+
+	@Override
+	@Transactional(readOnly=true)
+	public Iterable<EmployeeDto> getEmployeesDtoSelected(List<Long> personalNumbers) {
+		
+		
+		List<EmployeeDto> employeesSelected = new ArrayList<EmployeeDto>();
+		
+		for (int i = 0; i < personalNumbers.size(); i++) {
+			
+			if(employeeRepo.findByPersonalNumber(personalNumbers.get(i)).isPresent()) {
+				
+				if(this.checkPayInProcess(personalNumbers.get(i))) {
+					employeesSelected.add(employeeRepo.
+							getEmployeesDtoSelected(personalNumbers.get(i)).get());
+				}
+			}
+			
+			
+		}
+		return employeesSelected;
+	}
+
+	@Override
+	public Boolean checkPayInProcess(Long personalNumber) {
+		
+		List<Payment> pays = this.findByPersonalNumber(personalNumber).get().getPayments();
+		
+		//If the employee doesn't have a pay 
+		if(pays.isEmpty()) {
+			return true;
+		}
+		
+		//If the employee has a pay check if exist a pay in process
+		for (int i = 0; i < pays.size(); i++) {
+			if(pays.get(i).getFinished()==0) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
 	
 	
 	

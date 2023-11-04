@@ -57,6 +57,14 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long>{
 			+ "e.company_fk = :companyId", nativeQuery=true)
 	List<Employee> getEmployeesPayedByCompanyIdAndChargeId(@Param("chargeId") Long chargeId, @Param("companyId") Long companyId);
 	
+	/**
+	 * Get the employees selected in the main view
+	 * @param personalNumber the personal number of the employee
+	 * @return EmployeeDto
+	 */
+	@Query(name="getEmployeesDtoSelected",nativeQuery = true)
+	Optional<EmployeeDto> getEmployeesDtoSelected(@Param("personal_number") Long personalNumber);
+	
 	
 	
 }

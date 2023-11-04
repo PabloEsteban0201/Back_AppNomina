@@ -16,5 +16,11 @@ public class JdbcRepositoryPaymentConcept {
 		jdbcTemplate.update("call PR_AMOUNT_PAYCONCEPT (?, ?)",  param1,  param2);
 	}
 	
+	public void reportPayment(Long paymentId) {
+		
+		jdbcTemplate.update("CALL PR_CALC_PAYMENT(?)",  paymentId);
+	}
+	
+	
 	
 }
