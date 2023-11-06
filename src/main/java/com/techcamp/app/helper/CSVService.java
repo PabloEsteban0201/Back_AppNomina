@@ -48,7 +48,7 @@ public class CSVService {
 
 		//Second create the employee
 		Employee newEmployee = new Employee(Long.parseLong(personalNumber), namePerson, 
-				lastname, new BigDecimal(salary), email, Integer.parseInt(state), chargeEmploy, companyEmploy);
+				lastname, new BigDecimal(salary), employeeRepo.getCurrency(companyEmploy.getCompanyId()), email, Integer.parseInt(state), chargeEmploy, companyEmploy);
 		
 		try {
 			employeeRepo.save(newEmployee);

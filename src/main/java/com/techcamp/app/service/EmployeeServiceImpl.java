@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.techcamp.app.dto.AssignConceptEmployeeDto;
 import com.techcamp.app.dto.EmployeeDto;
+import com.techcamp.app.dto.EmployeeReportDto;
 import com.techcamp.app.dto.LiquidateEmployeeDto;
 import com.techcamp.app.dto.RequestLiquidationDto;
 import com.techcamp.app.model.Employee;
@@ -70,10 +71,12 @@ public class EmployeeServiceImpl implements EmployeeService{
 	}
 
 	@Override
-	@Transactional
+	@Transactional(rollbackFor = Exception.class)
 	public Employee save(Employee employee) {
 		
+		
 		return employeeRepo.save(employee);
+		
 	}
 
 	@Override
@@ -100,14 +103,14 @@ public class EmployeeServiceImpl implements EmployeeService{
 
 	@Override
 	@Transactional(readOnly=true)
-	public Iterable<Employee> getEmployeesPayedByCompanyId(Long companyId) {
+	public Iterable<EmployeeReportDto> getEmployeesPayedByCompanyId(Long companyId) {
 		
 		return employeeRepo.getEmployeesPayedByCompanyId(companyId);
 	}
 
 	@Override
 	@Transactional(readOnly=true)
-	public Iterable<Employee> getEmployeesPayedByCompanyIdAndChargeId(Long companyId, Long chargeId) {
+	public Iterable<EmployeeReportDto> getEmployeesPayedByCompanyIdAndChargeId(Long companyId, Long chargeId) {
 		
 		return employeeRepo.getEmployeesPayedByCompanyIdAndChargeId(chargeId,companyId);
 	}
@@ -190,6 +193,19 @@ public class EmployeeServiceImpl implements EmployeeService{
 	public Optional<EmployeeDto> getEmployeeDtoByPersonalNumber(Long personalNumber) {
 		
 		return employeeRepo.getEmployeesDtoSelected(personalNumber);
+	}
+
+	@Override
+	@Transactional
+	public void setCurrency(Long employeeId) {
+		
+		employeeRepo.setCurrency(employeeId);
+	}
+
+	@Override
+	public String getCurrencyAbbByCompanyId(Long companyId) {
+		
+		return employeeRepo.getCurrency(companyId);
 	}
 	
 	

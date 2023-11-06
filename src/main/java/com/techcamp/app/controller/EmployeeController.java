@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.techcamp.app.dto.EmployeeDto;
+import com.techcamp.app.dto.EmployeeReportDto;
 import com.techcamp.app.model.Charge;
 import com.techcamp.app.model.Company;
 import com.techcamp.app.model.Employee;
@@ -134,7 +135,11 @@ public class EmployeeController {
 		
 	}
 	
-	//create a employee
+	/**
+	 * This end point is to create an employee 
+	 * @param employDto 
+	 * @return Created if the request if ok
+	 */
 	@PostMapping
 	public ResponseEntity<?> create(@RequestBody EmployeeDto employDto){
 		
@@ -146,9 +151,16 @@ public class EmployeeController {
 		
 		//Second create the employee
 		Employee newEmployee = new Employee(employDto.getPersonalNumber(), employDto.getNamePerson(), 
-				employDto.getLastname(), employDto.getSalary(), employDto.getEmail(), employDto.getState(), chargeEmploy, compEmploy);
+				employDto.getLastname(), employDto.getSalary(), employeeService.getCurrencyAbbByCompanyId(compEmploy.getCompanyId()), 
+				employDto.getEmail(), employDto.getState(), chargeEmploy, compEmploy);
 		
-		return ResponseEntity.status(HttpStatus.CREATED).body(employeeService.save(newEmployee));
+		
+		try {
+			return ResponseEntity.status(HttpStatus.CREATED).body(employeeService.save(newEmployee));
+		} catch (Exception e) {
+			
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
 	}
 	
 	
@@ -166,17 +178,21 @@ public class EmployeeController {
 		
 		//Set the employee with the DTO
 		
+		//company
+		Company comp = compService.findByNameCompany(employDto.getNameCompany()).get();
+		
 		employee.get().setNamePerson(employDto.getNamePerson());
 		employee.get().setLastname(employDto.getLastname());
 		employee.get().setPersonalNumber(employDto.getPersonalNumber());
 		employee.get().setSalary(employDto.getSalary());
 		employee.get().setEmail(employDto.getEmail());
 		employee.get().setState(employDto.getState());
+		employee.get().setCurrency(employeeService.getCurrencyAbbByCompanyId(comp.getCompanyId()));
 		
 		//set the charge with the DTO
 		employee.get().setCharge(chargeService.findByNameCharge(employDto.getNameCharge()).get());
 		//set the company with the DTO
-		employee.get().setCompany(compService.findByNameCompany(employDto.getNameCompany()).get());
+		employee.get().setCompany(comp);
 
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body(employeeService.save(employee.get()));
@@ -197,11 +213,16 @@ public class EmployeeController {
 		return ResponseEntity.ok().build();
 	}
 	
+	/**
+	 * End point to get all the employees payed by company
+	 * @param companyId
+	 * @return
+	 */
 	//Read all the employees using a DTO
 	@GetMapping("/employeesPayed/{companyId}")
-	public List<Employee> readEmployeesPayedByCompanyId(@PathVariable Long companyId){
+	public List<EmployeeReportDto> readEmployeesPayedByCompanyId(@PathVariable Long companyId){
 		
-		List<Employee> employeesPayed = StreamSupport.
+		List<EmployeeReportDto> employeesPayed = StreamSupport.
 				stream(employeeService.getEmployeesPayedByCompanyId(companyId).spliterator(), false).
 				collect(Collectors.toList());
 		
@@ -215,7 +236,7 @@ public class EmployeeController {
 	@GetMapping("/employeesPayed/{companyId}/{chargeId}")
 	public ResponseEntity<?> readEmployeesPayedByCompanyIdAndChargeId(@PathVariable Long companyId, @PathVariable Long chargeId){
 		
-		List<Employee> employeesPayed = StreamSupport.
+		List<EmployeeReportDto> employeesPayed = StreamSupport.
 				stream(employeeService.getEmployeesPayedByCompanyIdAndChargeId(companyId, chargeId).spliterator(), false).
 				collect(Collectors.toList());
 		

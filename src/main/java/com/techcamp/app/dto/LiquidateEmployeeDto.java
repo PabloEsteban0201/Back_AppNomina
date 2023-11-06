@@ -13,6 +13,8 @@ public class LiquidateEmployeeDto {
 	
 	private BigDecimal salary;
 	
+	private String currency;
+	
 	private List<ConceptsDto> benefits;
 	
 	private List<ConceptsDto> licenses;
@@ -84,8 +86,16 @@ public class LiquidateEmployeeDto {
 	public void setRetentions(List<ConceptsDto> retentions) {
 		this.retentions = retentions;
 	}
+	
+	public String getCurrency() {
+		return currency;
+	}
 
-	public LiquidateEmployeeDto(String namePerson, String lastname, Long personalNumber, BigDecimal salary,
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
+
+	public LiquidateEmployeeDto(String namePerson, String lastname, Long personalNumber, BigDecimal salary, String currency,
 			List<ConceptsDto> benefits, List<ConceptsDto> licenses, List<ConceptsDto> taxes,
 			List<ConceptsDto> retentions) {
 		super();
@@ -97,6 +107,7 @@ public class LiquidateEmployeeDto {
 		this.licenses = licenses;
 		this.taxes = taxes;
 		this.retentions = retentions;
+		this.currency = currency;
 	}
 
 	public LiquidateEmployeeDto() {

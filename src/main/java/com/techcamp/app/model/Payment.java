@@ -33,10 +33,10 @@ import lombok.NoArgsConstructor;
 	    		"select p.payment_id as paymentId, e.name_person as namePerson, "
 	    		+ "e.lastname as lastname, \r\n"
 	    		+ "e.personal_number as personalNumber, "
-	    		+ "e.salary as salary, "
+	    		+ "e.salary as salary, e.abb_currency as currency, "
 	    		+ "p.total_retentions + p.total_taxes as discounts, "
 	    		+ "p.total_benefits+p.total_licenses as additions, "
-	    		+ "p.total as total "
+	    		+ "p.total as total, p.pay_date as payDate "
 	    		+ "from employees E inner join payments P ON e.employee_id = p.employee_fk  "
 	    		+ "where p.payment_id=:payment_id",
 	    resultSetMapping = "getPaymentDetailsDto_mapping"
@@ -53,9 +53,11 @@ import lombok.NoArgsConstructor;
 					@ColumnResult(name="lastname", type= String.class),
 					@ColumnResult(name="personalNumber", type= Long.class),
 					@ColumnResult(name="salary", type= BigDecimal.class),
+					@ColumnResult(name="currency", type= String.class),
 					@ColumnResult(name="discounts", type= BigDecimal.class),
 					@ColumnResult(name="additions", type= BigDecimal.class),
-					@ColumnResult(name="total", type= BigDecimal.class)
+					@ColumnResult(name="total", type= BigDecimal.class),
+					@ColumnResult(name="payDate", type= Date.class)
 				}
 			)
 		}
@@ -67,7 +69,7 @@ import lombok.NoArgsConstructor;
 	    		"select p.payment_id as paymentId, e.name_person as namePerson, "
 	    		+ "e.lastname as lastname,  "
 	    		+ "e.personal_number as personalNumber, "
-	    		+ "e.salary as salary, "
+	    		+ "e.salary as salary, e.abb_currency as currency, "
 	    		+ "p.total_retentions + p.total_taxes as discounts, "
 	    		+ "p.total_benefits+p.total_licenses as additions, "
 	    		+ "p.total as total, p.pay_date as payDate "
@@ -87,6 +89,7 @@ import lombok.NoArgsConstructor;
 					@ColumnResult(name="lastname", type= String.class),
 					@ColumnResult(name="personalNumber", type= Long.class),
 					@ColumnResult(name="salary", type= BigDecimal.class),
+					@ColumnResult(name="currency", type= String.class),
 					@ColumnResult(name="discounts", type= BigDecimal.class),
 					@ColumnResult(name="additions", type= BigDecimal.class),
 					@ColumnResult(name="total", type= BigDecimal.class),

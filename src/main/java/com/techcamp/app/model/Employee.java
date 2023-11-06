@@ -7,6 +7,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.techcamp.app.dto.AssignConceptEmployeeDto;
 import com.techcamp.app.dto.EmployeeDto;
+import com.techcamp.app.dto.EmployeeReportDto;
 import com.techcamp.app.dto.LiquidateEmployeeDto;
 
 import jakarta.persistence.CascadeType;
@@ -69,7 +70,8 @@ import lombok.NoArgsConstructor;
     		+ "e.lastname as lastname, "
     		+ "e.personal_number as personalNumber, "
     		+ "com.name_company as nameCompany, "
-			+ "cha.name_charge as nameCharge, e.salary, e.email, e.state "
+			+ "cha.name_charge as nameCharge, e.abb_currency as currency, "
+			+ "e.salary, e.email, e.state "
 			+ "FROM employees E "
 			+ "INNER JOIN charges CHA ON e.charge_fk = cha.charge_id "
 			+ "INNER JOIN companies COM ON e.company_fk = com.company_id "
@@ -89,6 +91,7 @@ import lombok.NoArgsConstructor;
 				@ColumnResult(name="nameCompany", type= String.class),
 				@ColumnResult(name="nameCharge", type= String.class),
 				@ColumnResult(name="salary", type= BigDecimal.class),
+				@ColumnResult(name="currency", type= String.class),
 				@ColumnResult(name="email", type= String.class),
 				@ColumnResult(name="state", type= Integer.class)
 			}
@@ -104,7 +107,8 @@ import lombok.NoArgsConstructor;
 	    		+ "e.lastname as lastname, "
 	    		+ "e.personal_number as personalNumber, "
 	    		+ "com.name_company as nameCompany, "
-				+ "cha.name_charge as nameCharge, e.salary, e.email, e.state "
+				+ "cha.name_charge as nameCharge, e.abb_currency as currency, "
+				+ "e.salary, e.email, e.state "
 				+ "FROM employees E "
 				+ "INNER JOIN charges CHA ON e.charge_fk = cha.charge_id "
 				+ "INNER JOIN companies COM ON e.company_fk = com.company_id and "
@@ -124,6 +128,7 @@ import lombok.NoArgsConstructor;
 					@ColumnResult(name="nameCompany", type= String.class),
 					@ColumnResult(name="nameCharge", type= String.class),
 					@ColumnResult(name="salary", type= BigDecimal.class),
+					@ColumnResult(name="currency", type= String.class),
 					@ColumnResult(name="email", type= String.class),
 					@ColumnResult(name="state", type= Integer.class)
 				}
@@ -165,8 +170,10 @@ import lombok.NoArgsConstructor;
 	    		"SELECT e.name_person as namePerson, "
 	    		+ "e.lastname as lastname, "
 	    		+ "e.personal_number as personalNumber, "
-	    		+ "e.salary as salary "
+	    		+ "e.salary as salary, "
+	    		+ "e.abb_currency as currency "
 				+ "FROM employees E "
+	    		+ "INNER JOIN companies COM ON e.company_fk = com.company_id "
 				+ "where "
 				+ "e.personal_number = :personal_number ",
 	    resultSetMapping = "getLiquidationDto_mapping"
@@ -181,11 +188,78 @@ import lombok.NoArgsConstructor;
 					@ColumnResult(name="namePerson", type= String.class),
 					@ColumnResult(name="lastname", type= String.class),
 					@ColumnResult(name="personalNumber", type= Long.class),
-					@ColumnResult(name="salary", type= BigDecimal.class)
+					@ColumnResult(name="salary", type= BigDecimal.class),
+					@ColumnResult(name="currency", type= String.class),
 				}
 			)
 		}
 	)
+
+@NamedNativeQuery(
+	    name = "getEmployeesPayedByCompanyId",
+	    query =
+	    		"SELECT e.name_person as namePerson, "
+	    		+ "e.lastname as lastname, "
+	    		+ "e.personal_number as personalNumber, "
+	    		+ "e.salary as salary, "
+	    		+ "e.abb_currency as currency "
+				+ "FROM employees E "
+	    		+ "INNER JOIN companies COM ON e.company_fk = com.company_id "
+				+ "inner join payments P on e.employee_id = p.employee_fk "
+				+ "where "
+				+ "e.company_fk = :company_id and p.finished=0 ",
+	    resultSetMapping = "getEmployeesPayedByCompanyId_mapping"
+	)
+
+	@SqlResultSetMapping(
+		name = "getEmployeesPayedByCompanyId_mapping",
+		classes = {
+			@ConstructorResult(
+				targetClass = EmployeeReportDto.class,
+				columns = {  
+					@ColumnResult(name="namePerson", type= String.class),
+					@ColumnResult(name="lastname", type= String.class),
+					@ColumnResult(name="personalNumber", type= Long.class),
+					@ColumnResult(name="salary", type= BigDecimal.class),
+					@ColumnResult(name="currency", type= String.class),
+				}
+			)
+		}
+	)
+
+@NamedNativeQuery(
+	    name = "getEmployeesPayedByCompanyIdAndChargeId",
+	    query =
+	    		"SELECT e.name_person as namePerson, "
+	    		+ "e.lastname as lastname, "
+	    		+ "e.personal_number as personalNumber, "
+	    		+ "e.salary as salary, "
+	    		+ "e.abb_currency as currency "
+				+ "FROM employees E "
+	    		+ "INNER JOIN companies COM ON e.company_fk = com.company_id "
+				+ "INNER JOIN charges CHA ON e.charge_fk = cha.charge_id "
+				+ "INNER JOIN payments P on e.employee_id = p.employee_fk "
+				+ "where "
+				+ "e.company_fk = :company_id and p.finished=0 and e.charge_fk = :charge_id",
+	    resultSetMapping = "getEmployeesPayedByCompanyIdAndChargeId_mapping"
+	)
+
+	@SqlResultSetMapping(
+		name = "getEmployeesPayedByCompanyIdAndChargeId_mapping",
+		classes = {
+			@ConstructorResult(
+				targetClass = EmployeeReportDto.class,
+				columns = {  
+					@ColumnResult(name="namePerson", type= String.class),
+					@ColumnResult(name="lastname", type= String.class),
+					@ColumnResult(name="personalNumber", type= Long.class),
+					@ColumnResult(name="salary", type= BigDecimal.class),
+					@ColumnResult(name="currency", type= String.class),
+				}
+			)
+		}
+	)
+
 
 
 @AllArgsConstructor
@@ -215,6 +289,9 @@ public class Employee implements Serializable {
 
     @Column(name = "salary")
     private BigDecimal salary;
+    
+    @Column(name = "abb_currency")
+    private String currency;
 
     @Column(name = "email")
     private String email;
@@ -275,6 +352,16 @@ public class Employee implements Serializable {
 	public void setSalary(BigDecimal salary) {
 		this.salary = salary;
 	}
+	
+	
+
+	public String getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
 
 	public String getEmail() {
 		return email;
@@ -316,7 +403,7 @@ public class Employee implements Serializable {
 		this.payments = payments;
 	}
 
-	public Employee(Long personalNumber, String namePerson, String lastname, BigDecimal salary, String email,
+	public Employee(Long personalNumber, String namePerson, String lastname, BigDecimal salary, String currency, String email,
 			Integer state, Charge charge, Company company) {
 		super();
 		this.personalNumber = personalNumber;
@@ -327,6 +414,7 @@ public class Employee implements Serializable {
 		this.state = state;
 		this.charge = charge;
 		this.company = company;
+		this.currency= currency;
 	}
 
 	

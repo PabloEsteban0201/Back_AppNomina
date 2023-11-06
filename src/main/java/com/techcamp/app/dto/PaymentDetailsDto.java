@@ -23,6 +23,8 @@ public class PaymentDetailsDto {
 	
 	private BigDecimal salary;
 	
+	private String currency;
+	
 	private BigDecimal discounts;
 	
 	private BigDecimal additions;
@@ -70,6 +72,16 @@ public class PaymentDetailsDto {
 	public void setSalary(BigDecimal salary) {
 		this.salary = salary;
 	}
+	
+	
+
+	public String getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
 
 	public BigDecimal getDiscounts() {
 		return discounts;
@@ -113,7 +125,7 @@ public class PaymentDetailsDto {
 		this.payDate = payDate;
 	}
 
-	public PaymentDetailsDto(Long paymentId, String namePerson, String lastname, Long personalNumber, BigDecimal salary,
+	public PaymentDetailsDto(Long paymentId, String namePerson, String lastname, Long personalNumber, BigDecimal salary, String currency,
 			BigDecimal discounts, BigDecimal additions, BigDecimal total, Date payDate) {
 		super();
 		this.paymentId = paymentId;
@@ -125,6 +137,11 @@ public class PaymentDetailsDto {
 		this.additions = additions;
 		this.total = total;
 		this.payDate=payDate;
+		this.currency = currency;
+	}
+
+	public PaymentDetailsDto() {
+		
 	}
 
 	

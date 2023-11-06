@@ -19,6 +19,8 @@ public class ReportPaymentDto {
 	
 	private BigDecimal salary;
 	
+	private String currency;
+	
 	private BigDecimal totalBenefits;
 	
 	private BigDecimal totalRetentions;
@@ -132,8 +134,18 @@ public class ReportPaymentDto {
 	public void setPaymentId(Long paymentId) {
 		this.paymentId = paymentId;
 	}
+	
+	
 
-	public ReportPaymentDto(Long paymentId,String namePerson, String lastname, Long personalNumber, BigDecimal salary, BigDecimal totalBenefits,
+	public String getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(String currency) {
+		this.currency = currency;
+	}
+
+	public ReportPaymentDto(Long paymentId,String namePerson, String lastname, Long personalNumber, BigDecimal salary, String currency, BigDecimal totalBenefits,
 			BigDecimal totalRetentions, BigDecimal totalLicenses, BigDecimal totalTaxes, BigDecimal total) {
 		super();
 		this.paymentId=paymentId;
@@ -148,6 +160,7 @@ public class ReportPaymentDto {
 		this.additions = totalBenefits.add(totalLicenses);
 		this.total = total;
 		this.salary = salary;
+		this.currency = currency;
 	}
 	
 	

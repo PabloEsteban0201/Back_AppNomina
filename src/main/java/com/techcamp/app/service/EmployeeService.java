@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 import com.techcamp.app.dto.AssignConceptEmployeeDto;
 import com.techcamp.app.dto.EmployeeDto;
+import com.techcamp.app.dto.EmployeeReportDto;
 import com.techcamp.app.dto.LiquidateEmployeeDto;
 import com.techcamp.app.dto.RequestLiquidationDto;
 import com.techcamp.app.model.Employee;
@@ -35,9 +36,9 @@ public interface EmployeeService {
 	
 	public void deleteById(Long id);
 	
-	public Iterable<Employee> getEmployeesPayedByCompanyId(Long companyId);
+	public Iterable<EmployeeReportDto> getEmployeesPayedByCompanyId(Long companyId);
 	
-	public Iterable<Employee> getEmployeesPayedByCompanyIdAndChargeId(Long companyId, Long chargeId);
+	public Iterable<EmployeeReportDto> getEmployeesPayedByCompanyIdAndChargeId(Long companyId, Long chargeId);
 
 	public Iterable<AssignConceptEmployeeDto> getAssignConceptEmployeeDtoSelected(List<Long> personalNumbers);
 	
@@ -51,4 +52,17 @@ public interface EmployeeService {
 	 * @return EmployeeDto
 	 */
 	public Optional<EmployeeDto> getEmployeeDtoByPersonalNumber(Long personalNumber);
+	
+	/**
+	 * Set the currency of the employee using a procedure
+	 * @param employeeId a Long for the id of the employee
+	 */
+	public void setCurrency(Long employeeId);
+	
+	/**
+	 * Get the currency abbreviation by the company id
+	 * @param companyId Long value for the company id
+	 * @return String currency abbreviation code
+	 */
+	public String getCurrencyAbbByCompanyId(Long companyId);
 }

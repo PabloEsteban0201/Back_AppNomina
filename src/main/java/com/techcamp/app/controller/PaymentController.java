@@ -42,7 +42,11 @@ public class PaymentController {
 	@Autowired
 	private EmployeeService employeeService;
 	
-	
+	/**
+	 * This method reports the payment for a list of given in employees with a pay in process
+	 * @param paymentDto
+	 * @return ReportPaymentDto is the detail report of the all payments
+	 */
 	@PostMapping
 	public ResponseEntity<?> reportPayment(@RequestBody PaymentEmployeeDto paymentDto){
 		
@@ -85,6 +89,7 @@ public class PaymentController {
 			reportedPays.add(new ReportPaymentDto(payFinish.getPaymentId(),employee.getNamePerson(),
 					employee.getLastname(),employee.getPersonalNumber(),
 					employee.getSalary(),
+					employee.getCurrency(),
 					payFinish.getTotalBenefits(),
 					payFinish.getTotalRetentions(),
 					payFinish.getTotalLicenses(),
@@ -106,6 +111,8 @@ public class PaymentController {
 		}
 		
 		return ResponseEntity.status(HttpStatus.OK).body(oPayDetailsDto.get());
+		
+		
 	}
 	
 	@GetMapping("/detailPayments/{id}")
@@ -116,6 +123,9 @@ public class PaymentController {
 				stream(paymentService.getPaymentDetailsByPersonalNumber(id).spliterator(), false).
 				collect(Collectors.toList());
 		
+		if(payDetails.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
 
 		return ResponseEntity.status(HttpStatus.OK).body(payDetails);
 	}
