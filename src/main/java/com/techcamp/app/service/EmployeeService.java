@@ -65,4 +65,10 @@ public interface EmployeeService {
 	 * @return String currency abbreviation code
 	 */
 	public String getCurrencyAbbByCompanyId(Long companyId);
+	
+	/**
+	 * Get the total number of employees
+	 * @return number of employees
+	 */
+	public Long getCountEmployees();
 }

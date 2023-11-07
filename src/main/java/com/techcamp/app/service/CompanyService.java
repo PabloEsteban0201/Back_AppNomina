@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import com.techcamp.app.model.Company;
+import com.techcamp.app.request.CompanyNamesRequest;
 
 
 
@@ -21,4 +22,6 @@ public interface CompanyService {
 	public List<Company> getCompanyByEmployeeId(Long employeeId);
 	
 	public Optional<Company> findByNameCompany(String nameCompany);
+	
+	public CompanyNamesRequest getCompanyNames();
 }

@@ -1,5 +1,6 @@
 package com.techcamp.app.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,13 @@ public class ChargeServiceImpl implements ChargeService{
 	public Optional<Charge> findByNameCharge(String nameCharge) {
 		
 		return chargeRepo.findByNameCharge(nameCharge);
+	}
+
+	@Override
+	@Transactional(readOnly=true)
+	public List<String> getChargesNames() {
+		
+		return chargeRepo.getAllChargesNames();
 	}
 
 }

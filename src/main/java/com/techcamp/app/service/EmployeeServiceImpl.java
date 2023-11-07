@@ -203,9 +203,17 @@ public class EmployeeServiceImpl implements EmployeeService{
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public String getCurrencyAbbByCompanyId(Long companyId) {
 		
 		return employeeRepo.getCurrency(companyId);
+	}
+
+	@Override
+	@Transactional(readOnly=true)
+	public Long getCountEmployees() {
+		
+		return employeeRepo.getCountEmployees();
 	}
 	
 	

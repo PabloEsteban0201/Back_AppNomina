@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.techcamp.app.model.Company;
 import com.techcamp.app.repository.CompanyRepository;
+import com.techcamp.app.request.CompanyNamesRequest;
 
 @Service
 public class CompanyServiceImpl implements CompanyService {
@@ -47,9 +48,19 @@ public class CompanyServiceImpl implements CompanyService {
 	}
 
 	@Override
+	@Transactional(readOnly=true)
 	public Optional<Company> findByNameCompany(String nameCompany) {
 		// TODO Auto-generated method stub
 		return companyRepo.findByNameCompany(nameCompany);
+	}
+
+	@Override
+	@Transactional(readOnly=true)
+	public CompanyNamesRequest getCompanyNames() {
+		
+		CompanyNamesRequest comps = new CompanyNamesRequest(companyRepo.getCompanyNames());
+		
+		return comps;
 	}
 
 }

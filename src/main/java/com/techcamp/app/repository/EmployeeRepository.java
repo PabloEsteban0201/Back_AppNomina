@@ -76,11 +76,18 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long>{
 	@Query(value = "CALL PR_SET_CURRENCY(:id_employee)", nativeQuery = true)
 	void setCurrency(@Param("id_employee") Long employeeId);
 	
-	
+	/**
+	 * Get the currency abbreviation used in the company
+	 * @param company_id the id of the company
+	 * @return the abbreviation currency
+	 */
 	@Query(value="select Curr.abbreviation from currency curr\r\n"
 			+ "inner join countries coun on coun.code_curr_fk = curr.code_curr_id\r\n"
 			+ "inner join companies com on com.country_code_fk = coun.code_id \r\n"
 			+ "where\r\n"
 			+ "com.company_id = :company_id ", nativeQuery = true)
 	String getCurrency(@Param("company_id") Long company_id);
+	
+	@Query(value="SELECT COUNT(*) FROM employees", nativeQuery = true)
+	Long getCountEmployees();
 }

@@ -20,5 +20,12 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
 	List<Company> getCompanyByEmployeeId(@Param("id_employee") Long id_employee);
 	
 	public Optional<Company> findByNameCompany(String nameCompany);
+	
+	/**
+	 * A query to get all the company names
+	 * @return a List of String
+	 */
+	@Query(value = "select name_company from companies", nativeQuery = true)
+	List<String> getCompanyNames();
 
 }
