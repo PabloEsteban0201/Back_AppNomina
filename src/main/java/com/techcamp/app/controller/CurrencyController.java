@@ -10,15 +10,18 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.techcamp.app.model.Currency;
+import com.techcamp.app.request.CurrencyCompanyRequest;
 import com.techcamp.app.service.CurrencyService;
 
 @RestController
 @RequestMapping("/currency")
+@CrossOrigin(origins = "*")
 public class CurrencyController {
 	
 	@Autowired
@@ -61,6 +64,20 @@ public class CurrencyController {
 		
 		return ResponseEntity.ok(oCurr.get());
 		
+	}
+	
+	/**
+	 * End point to get the currency of the company
+	 * @return CurrencyCompanyRequest
+	 */
+	@GetMapping("/getCurrenciesCompanies")
+	public List<CurrencyCompanyRequest> getCurrenciesCompanies(){
+		
+		List<CurrencyCompanyRequest> currs = StreamSupport.
+				stream(currService.getCurrencyCompanies().spliterator(), false).
+				collect(Collectors.toList());
+		
+		return currs;
 	}
 	
 	

@@ -34,6 +34,8 @@ public interface EmployeeService {
 	
 	public Optional<Employee> findByPersonalNumber(Long personalNumber);
 	
+	public Optional<Employee> findByEmail(String email);
+	
 	public void deleteById(Long id);
 	
 	public Iterable<EmployeeReportDto> getEmployeesPayedByCompanyId(Long companyId);

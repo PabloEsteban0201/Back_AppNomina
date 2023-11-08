@@ -74,7 +74,6 @@ public class EmployeeServiceImpl implements EmployeeService{
 	@Transactional(rollbackFor = Exception.class)
 	public Employee save(Employee employee) {
 		
-		
 		return employeeRepo.save(employee);
 		
 	}
@@ -214,6 +213,13 @@ public class EmployeeServiceImpl implements EmployeeService{
 	public Long getCountEmployees() {
 		
 		return employeeRepo.getCountEmployees();
+	}
+
+	@Override
+	@Transactional(readOnly=true)
+	public Optional<Employee> findByEmail(String email) {
+		
+		return employeeRepo.findByEmail(email);
 	}
 	
 	

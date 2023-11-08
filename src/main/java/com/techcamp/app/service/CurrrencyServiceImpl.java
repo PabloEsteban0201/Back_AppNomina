@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.techcamp.app.model.Currency;
 import com.techcamp.app.repository.CurrencyRepository;
+import com.techcamp.app.request.CurrencyCompanyRequest;
 
 @Service
 public class CurrrencyServiceImpl implements CurrencyService {
@@ -37,6 +38,13 @@ public class CurrrencyServiceImpl implements CurrencyService {
 	public Optional<Currency> findById(Long id) {
 		
 		return currRepo.findById(id);
+	}
+
+	@Override
+	@Transactional(readOnly=true)
+	public Iterable<CurrencyCompanyRequest> getCurrencyCompanies() {
+		
+		return currRepo.getCurrencyCompany();
 	}
 	
 

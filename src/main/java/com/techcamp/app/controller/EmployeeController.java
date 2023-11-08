@@ -143,6 +143,14 @@ public class EmployeeController {
 	@PostMapping
 	public ResponseEntity<?> create(@RequestBody EmployeeDto employDto){
 		
+		if(employeeService.findByPersonalNumber(employDto.getPersonalNumber()).isPresent()) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+		
+		if(employeeService.findByEmail(employDto.getEmail()).isPresent()) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+		
 		
 		//First create object company and object charge
 		Charge chargeEmploy = chargeService.findByNameCharge(employDto.getNameCharge()).get();
@@ -158,8 +166,9 @@ public class EmployeeController {
 		try {
 			return ResponseEntity.status(HttpStatus.CREATED).body(employeeService.save(newEmployee));
 		} catch (Exception e) {
-			
+			System.out.println("Error en guardado");
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+			
 		}
 	}
 	
@@ -199,7 +208,11 @@ public class EmployeeController {
 	}
 
 	
-	//Delete a employee
+	/**
+	 * End point to delete an employee by personal number
+	 * @param personalNumber
+	 * @return
+	 */
 	@DeleteMapping("/{personalNumber}")
 	public ResponseEntity<?> delete(@PathVariable Long personalNumber){
 		
@@ -277,6 +290,11 @@ public class EmployeeController {
 		
 		return ResponseEntity.ok(employeeService.getCountEmployees());
 		
+	}
+	
+	@GetMapping("/check")
+	public ResponseEntity<Boolean> check(){
+		return null;
 	}
 	
 	

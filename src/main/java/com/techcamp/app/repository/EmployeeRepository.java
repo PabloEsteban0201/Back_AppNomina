@@ -44,6 +44,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long>{
 	
 	Optional<Employee> findByPersonalNumber(Long personalNumber);
 	
+	Optional<Employee> findByEmail(String email);
+	
 	
 	@Query(name="getEmployeesPayedByCompanyId", nativeQuery=true)
 	List<EmployeeReportDto> getEmployeesPayedByCompanyId(@Param("company_id") Long companyId);

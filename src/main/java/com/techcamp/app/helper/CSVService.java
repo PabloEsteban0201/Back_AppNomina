@@ -43,12 +43,20 @@ public class CSVService {
 	public Boolean uploadCsv(String personalNumber, String namePerson,String lastname, String salary, String email,
 			String state, String nameCharge, String nameCompany) {
 		
+		if(employeeRepo.findByPersonalNumber(Long.parseLong(personalNumber)).isPresent()) {
+			return false;
+		}
+		if(employeeRepo.findByEmail(email).isPresent()) {
+			return false;
+		}
+		
 		Charge chargeEmploy = chargeRepo.findByNameCharge(nameCharge).get();
 		Company companyEmploy = companyRepo.findByNameCompany(nameCompany).get();
 
 		//Second create the employee
 		Employee newEmployee = new Employee(Long.parseLong(personalNumber), namePerson, 
 				lastname, new BigDecimal(salary), employeeRepo.getCurrency(companyEmploy.getCompanyId()), email, Integer.parseInt(state), chargeEmploy, companyEmploy);
+		
 		
 		try {
 			employeeRepo.save(newEmployee);

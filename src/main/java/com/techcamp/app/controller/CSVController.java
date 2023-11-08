@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,9 +38,10 @@ public class CSVController {
 	  }
 	
 	@PostMapping("/csv")
-    public String uploadCSV(@RequestParam("file") MultipartFile file) throws IOException {
+    public ResponseEntity<?> uploadCSV(@RequestParam("file") MultipartFile file) throws IOException {
+		
         if (file.isEmpty()) {
-            return "Archivo no válido";
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
         
         if(!hasCSVFormat(file)) {
@@ -55,17 +58,21 @@ public class CSVController {
 	                String[] data = line.split(",");
 	                
 	                if (data.length == 8 ) {
-	                		
-	                	csvService.uploadCsv(data[0],data[1],data[2],data[3],data[4],data[5],data[6],data[7]);
+	                	
+	                	if(!csvService.uploadCsv(data[0],data[1],data[2],data[3],data[4],data[5],data[6],data[7])) {
+	                		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+	                	}
 	                }
                 
             	}
                 
                 i++;
             }
-        }
+        }catch (Exception e) {
+        	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
 
-        return "Datos insertados exitosamente";
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 	
 }

@@ -4,19 +4,48 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.techcamp.app.request.CurrencyCompanyRequest;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
+import jakarta.persistence.ColumnResult;
+import jakarta.persistence.ConstructorResult;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.NamedNativeQuery;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.SqlResultSetMapping;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+
+@NamedNativeQuery(
+	    name = "getCurrencyCompany",
+	    query =
+	    		"select com.name_company as nameCompany, Curr.abbreviation as currency from currency curr "
+				+ "inner join countries coun on coun.code_curr_fk = curr.code_curr_id "
+				+ "inner join companies com on com.country_code_fk = coun.code_id",
+	    resultSetMapping = "getCurrencyCompany_mapping"
+	)
+
+	@SqlResultSetMapping(
+		name = "getCurrencyCompany_mapping",
+		classes = {
+			@ConstructorResult(
+				targetClass = CurrencyCompanyRequest.class,
+				columns = {
+					@ColumnResult(name="nameCompany", type= String.class),
+					@ColumnResult(name="currency", type= String.class)
+				}
+			)
+		}
+	)
+
+
+
 @AllArgsConstructor
 @NoArgsConstructor
-
 
 @Entity
 @Table(name="currency")
