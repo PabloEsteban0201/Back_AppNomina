@@ -68,6 +68,62 @@ public class TypeConceptController {
 		return listTypes;
 	}
 	
+	/**
+	 * Get the lists of benefits 
+	 */
+	@GetMapping("/getBenefits")
+	public ResponseEntity<List<String>> getAllBenefits() {
+		
+		List<String> benefits = StreamSupport.
+				stream(typeConceptService.getAllNameBenefits().spliterator(), false).
+				collect(Collectors.toList());
+		
+		return ResponseEntity.status(HttpStatus.OK).body(benefits);
+	}
+	
+	/**
+	 * Get the lists of licenses 
+	 */
+	@GetMapping("/getLicenses")
+	public ResponseEntity<List<String>> getAllLicenses() {
+		
+		List<String> licenses = StreamSupport.
+				stream(typeConceptService.getAllNameLicenses().spliterator(), false).
+				collect(Collectors.toList());
+		
+		return ResponseEntity.status(HttpStatus.OK).body(licenses);
+	}
+	
+	
+	/**
+	 * Get the lists of retentions 
+	 */
+	@GetMapping("/getRetentions")
+	public ResponseEntity<List<String>> getAllRetentions() {
+		
+		List<String> retentions = StreamSupport.
+				stream(typeConceptService.getAllNameRetentions().spliterator(), false).
+				collect(Collectors.toList());
+		
+		return ResponseEntity.status(HttpStatus.OK).body(retentions);
+	}
+	
+	
+	
+	/**
+	 * Get the lists of benefits 
+	 */
+	@GetMapping("/getTaxes")
+	public ResponseEntity<List<String>> getAllTaxes() {
+		
+		List<String> taxes = StreamSupport.
+				stream(typeConceptService.getAllNameTaxes().spliterator(), false).
+				collect(Collectors.toList());
+		
+		return ResponseEntity.status(HttpStatus.OK).body(taxes);
+	}
+	
+	
 	
 	
 	

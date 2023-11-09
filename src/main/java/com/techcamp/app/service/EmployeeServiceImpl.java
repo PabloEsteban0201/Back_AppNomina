@@ -130,10 +130,6 @@ public class EmployeeServiceImpl implements EmployeeService{
 					AssignConceptEmployeeDto employee = 
 							employeeRepo.getAssignConceptEmployeeDto(personalNumbers.get(i)).get();
 					
-					employee.setNameBenefits(typeConceptRepo.getAllNameBenefits());
-					employee.setNameLicenses(typeConceptRepo.getAllNameLicenses());
-					employee.setNameTaxes(typeConceptRepo.getAllNameTaxes());;
-					employee.setNameRetentions(typeConceptRepo.getAllNameRetentions());
 					
 					employeesSelected.add(employee);
 				}

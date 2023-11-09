@@ -12,6 +12,8 @@ public class AssignConceptEmployeeDto {
 	
 	private String nameCompany;
 	
+	//TODO remove this
+	/** Not necessary
 	private List<String> nameTaxes;
 	
 	private List<String> nameRetentions;
@@ -19,6 +21,7 @@ public class AssignConceptEmployeeDto {
 	private List<String> nameBenefits;
 	
 	private List<String> nameLicenses;
+	**/
 
 	public String getNamePerson() {
 		return namePerson;
@@ -52,38 +55,7 @@ public class AssignConceptEmployeeDto {
 		this.nameCompany = nameCompany;
 	}
 
-	public List<String> getNameTaxes() {
-		return nameTaxes;
-	}
-
-	public void setNameTaxes(List<String> nameTaxes) {
-		this.nameTaxes = nameTaxes;
-	}
-
-	public List<String> getNameRetentions() {
-		return nameRetentions;
-	}
-
-	public void setNameRetentions(List<String> nameRetentions) {
-		this.nameRetentions = nameRetentions;
-	}
-
-	public List<String> getNameBenefits() {
-		return nameBenefits;
-	}
-
-	public void setNameBenefits(List<String> nameBenefits) {
-		this.nameBenefits = nameBenefits;
-	}
-
-	public List<String> getNameLicenses() {
-		return nameLicenses;
-	}
-
-	public void setNameLicenses(List<String> nameLicenses) {
-		this.nameLicenses = nameLicenses;
-	}
-
+	
 	public AssignConceptEmployeeDto(String namePerson, String lastname, Long personalNumber, String nameCompany) {
 		super();
 		this.namePerson = namePerson;
