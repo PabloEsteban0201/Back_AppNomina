@@ -31,4 +31,11 @@ public class ChargeServiceImpl implements ChargeService{
 		return chargeRepo.getAllChargesNames();
 	}
 
+	@Override
+	@Transactional(readOnly=true)
+	public Iterable<Charge> findAll() {
+		
+		return chargeRepo.findAll();
+	}
+
 }

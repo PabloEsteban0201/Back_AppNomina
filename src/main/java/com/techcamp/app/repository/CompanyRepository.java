@@ -28,4 +28,5 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
 	@Query(value = "select name_company from companies", nativeQuery = true)
 	List<String> getCompanyNames();
 
+
 }

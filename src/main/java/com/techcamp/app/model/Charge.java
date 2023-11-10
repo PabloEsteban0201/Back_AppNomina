@@ -3,6 +3,8 @@ package com.techcamp.app.model;
 import java.io.Serializable;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,6 +33,7 @@ public class Charge implements Serializable {
 	@Column(name = "name_charge")
     private String nameCharge;
     
+	@JsonIgnore
     @OneToMany(mappedBy = "charge", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Employee> employees;
 

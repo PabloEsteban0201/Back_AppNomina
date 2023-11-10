@@ -14,4 +14,10 @@ public interface ChargeService {
 	 * @return List of string
 	 */
 	public List<String> getChargesNames();
+	
+	/**
+	 * Service to get all the charges
+	 * @return Iterable of Charge
+	 */
+	public Iterable<Charge> findAll();
 }
