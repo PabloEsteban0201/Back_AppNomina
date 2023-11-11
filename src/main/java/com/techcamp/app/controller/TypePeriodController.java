@@ -12,39 +12,33 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.techcamp.app.model.Charge;
-import com.techcamp.app.service.ChargeService;
+import com.techcamp.app.model.TypePeriod;
+import com.techcamp.app.service.TypePeriodService;
 
 @RestController
-@RequestMapping("/charge")
+@RequestMapping("/period")
 @CrossOrigin(origins = "*")
-public class ChargeController {
+public class TypePeriodController {
 	
 	@Autowired
-	private ChargeService chargeService;
-	
-	@GetMapping("/getChargesNames")
-	public ResponseEntity<List<String>> getAllChargesNames(){
-		
-		return ResponseEntity.status(HttpStatus.ACCEPTED).body(chargeService.getChargesNames());
-	}
+	private TypePeriodService typePeriodService;
 	
 	/**
-	 * End point to get all the charges
-	 * @return List of objects Charge
+	 * End point to get all the TypePeriod objects
+	 * @return List of TypePeriod object
 	 */
-	@GetMapping("/getAllCharges")
-	public ResponseEntity<List<Charge>> getAllCharges(){
+	@GetMapping("/getAllPeriods")
+	public ResponseEntity<?> getAllTypePeriod(){
 		
-		List<Charge> charges = StreamSupport.
-				stream(chargeService.findAll().spliterator(), false).
+		List<TypePeriod> periods = StreamSupport.
+				stream(typePeriodService.findAll().spliterator(), false).
 				collect(Collectors.toList());
 		
-		if(charges.isEmpty()) {
+		if(periods.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 		
-		return ResponseEntity.status(HttpStatus.OK).body(charges);
+		return ResponseEntity.status(HttpStatus.OK).body(periods);
 	}
-	
+
 }

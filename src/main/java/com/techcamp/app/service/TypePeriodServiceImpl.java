@@ -25,21 +25,28 @@ public class TypePeriodServiceImpl implements TypePeriodService{
 		
 		String codePeriod="";
 		
-		switch(namePeriod) {
-		  case "Quincenal":
+		switch(namePeriod.toUpperCase()) {
+		  case "QUINCENAL":
 			  codePeriod = "QUI";
 		    break;
-		  case "Mensual":
+		  case "MENSUAL":
 			  codePeriod = "MEN";
-		  case "Trimestral":
+		  case "TRIMESTRAL":
 			  codePeriod = "TRI";
-		  case "Semestral":
+		  case "SEMESTRAL":
 			  codePeriod = "SEM";
 		    break;
 		  default:
 		}
 		
 		return typePeriodRepo.findByCodePeriod(codePeriod);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Iterable<TypePeriod> findAll() {
+		
+		return typePeriodRepo.findAll();
 	}
 
 }
