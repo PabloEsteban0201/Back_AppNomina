@@ -19,5 +19,10 @@ public interface PaymentService {
 	
 	public Optional<PaymentDetailsDto> getPaymentDetailsDto(Long paymentId);
 	
+	/**
+	 * This service method get the payment with all details and payment concepts
+	 * @param personalNumber the personal number of the employee
+	 * @return List of PaymentDetailsDto
+	 */
 	public Iterable<PaymentDetailsDto> getPaymentDetailsByPersonalNumber(Long personalNumber);
 }

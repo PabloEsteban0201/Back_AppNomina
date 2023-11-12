@@ -31,6 +31,8 @@ public class PaymentDetailsDto {
 	
 	private BigDecimal total;
 	
+	private String period;
+	
 	private List<ConceptsDto> payConcepts;
 
 	public Long getPaymentId() {
@@ -124,20 +126,34 @@ public class PaymentDetailsDto {
 	public void setPayDate(Date payDate) {
 		this.payDate = payDate;
 	}
+	
+	
 
-	public PaymentDetailsDto(Long paymentId, String namePerson, String lastname, Long personalNumber, BigDecimal salary, String currency,
-			BigDecimal discounts, BigDecimal additions, BigDecimal total, Date payDate) {
+	public String getPeriod() {
+		return period;
+	}
+
+	public void setPeriod(String period) {
+		this.period = period;
+	}
+
+	
+
+	public PaymentDetailsDto(Long paymentId, Date payDate, String namePerson, String lastname, Long personalNumber,
+			BigDecimal salary, String currency, BigDecimal discounts, BigDecimal additions, BigDecimal total,
+			String period) {
 		super();
 		this.paymentId = paymentId;
+		this.payDate = payDate;
 		this.namePerson = namePerson;
 		this.lastname = lastname;
 		this.personalNumber = personalNumber;
 		this.salary = salary;
+		this.currency = currency;
 		this.discounts = discounts;
 		this.additions = additions;
 		this.total = total;
-		this.payDate=payDate;
-		this.currency = currency;
+		this.period = period;
 	}
 
 	public PaymentDetailsDto() {

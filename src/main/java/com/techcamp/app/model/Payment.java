@@ -36,9 +36,12 @@ import lombok.NoArgsConstructor;
 	    		+ "e.salary as salary, e.abb_currency as currency, "
 	    		+ "p.total_retentions + p.total_taxes as discounts, "
 	    		+ "p.total_benefits+p.total_licenses as additions, "
-	    		+ "p.total as total, p.pay_date as payDate "
+	    		+ "p.total as total, p.pay_date as payDate, "
+	    		+ "tp.description AS period "
 	    		+ "from employees E inner join payments P ON e.employee_id = p.employee_fk  "
-	    		+ "where p.payment_id=:payment_id",
+	    		+ "INNER JOIN type_period tp ON p.type_period_fk = tp.period_id "
+	    		+ "where p.payment_id=:payment_id and p.finished = 1",
+	    		
 	    resultSetMapping = "getPaymentDetailsDto_mapping"
 	)
 
@@ -72,10 +75,13 @@ import lombok.NoArgsConstructor;
 	    		+ "e.salary as salary, e.abb_currency as currency, "
 	    		+ "p.total_retentions + p.total_taxes as discounts, "
 	    		+ "p.total_benefits+p.total_licenses as additions, "
-	    		+ "p.total as total, p.pay_date as payDate "
+	    		+ "p.total as total, p.pay_date as payDate, "
+	    		+ "tp.description AS period "
 	    		+ "from employees E inner join payments P ON e.employee_id = p.employee_fk  "
-	    		+ "where e.personal_number = :personal_number",
-	    resultSetMapping = "getPaymentDetailsDtoByEmployee_mapping"
+	    		+ "INNER JOIN type_period tp ON p.type_period_fk = tp.period_id "
+	    		+ "where e.personal_number = :personal_number and p.finished = 1",
+	    		
+	    resultSetMapping = "getPaymentDetailsDtoByEmployee_mapping" 
 	)
 
 	@SqlResultSetMapping(
@@ -93,7 +99,8 @@ import lombok.NoArgsConstructor;
 					@ColumnResult(name="discounts", type= BigDecimal.class),
 					@ColumnResult(name="additions", type= BigDecimal.class),
 					@ColumnResult(name="total", type= BigDecimal.class),
-					@ColumnResult(name="payDate", type= Date.class)
+					@ColumnResult(name="payDate", type= Date.class),
+					@ColumnResult(name="period", type= String.class)
 				}
 			)
 		}

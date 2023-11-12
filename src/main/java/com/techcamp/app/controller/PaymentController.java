@@ -101,6 +101,7 @@ public class PaymentController {
 		return ResponseEntity.status(HttpStatus.OK).body(reportedPays);
 	}
 	
+	
 	@GetMapping("/detail/{id}")
 	public ResponseEntity<?> getDetailsPayment(@PathVariable Long id){
 		
@@ -115,6 +116,11 @@ public class PaymentController {
 		
 	}
 	
+	/**
+	 * This end point get all the payments finished with details and payment concepts
+	 * @param id the personal number of the employee
+	 * @return A OK response with the List of PaymentDetailsDto, A NOT_FOUND if the employee does not have any payments finished 
+	 */
 	@GetMapping("/detailPayments/{id}")
 	public ResponseEntity<?> getPaymentsDetailsByPersonalNumber(@PathVariable Long id){
 		

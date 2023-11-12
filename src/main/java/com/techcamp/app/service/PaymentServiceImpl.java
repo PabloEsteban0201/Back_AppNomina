@@ -61,14 +61,27 @@ public class PaymentServiceImpl implements PaymentService{
 	@Transactional(readOnly = true)
 	public Optional<PaymentDetailsDto> getPaymentDetailsDto(Long paymentId) {
 		
-		Optional<PaymentDetailsDto> oPayDetailsDto = paymentRepo.getPaymentDetailsDto(paymentId);
+		Optional<Payment> oPay = paymentRepo.findById(paymentId);
+		Optional<PaymentDetailsDto> oPayDetailsDto = Optional.empty();
 		
-		oPayDetailsDto.get().setPayConcepts(typeConceptRepo.getConceptsDtoByPaymentId(paymentId));
+		if(oPay.isPresent() && oPay.get().getFinished()==1) {
+			
+			oPayDetailsDto = paymentRepo.getPaymentDetailsDto(paymentId);
+			
+			oPayDetailsDto.get().setPayConcepts(typeConceptRepo.getConceptsDtoByPaymentId(paymentId));
+			
+			
+		}else {
+			return Optional.empty();
+		}
+		
+		
 		
 		return oPayDetailsDto;
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public Iterable<PaymentDetailsDto> getPaymentDetailsByPersonalNumber(Long personalNumber) {
 		
 		List<PaymentDetailsDto> payDetails = paymentRepo.getPaymentDetailsDtoByPersonalNumber(personalNumber);

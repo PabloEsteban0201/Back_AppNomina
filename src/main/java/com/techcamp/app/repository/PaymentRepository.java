@@ -28,6 +28,11 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
 	@Query(name="getPaymentDetailsDto",nativeQuery = true)
 	Optional<PaymentDetailsDto> getPaymentDetailsDto(@Param("payment_id") Long paymentId);
 
+	/**
+	 * Query to get the PaymentsDetails Dto, the payment with all payment concepts
+	 * @param personalNumber the personal number of the employee
+	 * @return List of PaymentDetailsDto
+	 */
 	@Query(name="getPaymentDetailsDtoByEmployee",nativeQuery = true)
 	List<PaymentDetailsDto> getPaymentDetailsDtoByPersonalNumber(@Param("personal_number") Long personalNumber);
 	
