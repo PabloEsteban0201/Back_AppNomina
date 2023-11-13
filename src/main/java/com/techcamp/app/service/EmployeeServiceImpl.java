@@ -19,6 +19,7 @@ import com.techcamp.app.dto.RequestLiquidationDto;
 import com.techcamp.app.model.Employee;
 import com.techcamp.app.model.Payment;
 import com.techcamp.app.repository.EmployeeRepository;
+import com.techcamp.app.repository.PaymentRepository;
 import com.techcamp.app.repository.TypeConceptRepository;
 
 @Service
@@ -29,6 +30,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 	
 	@Autowired
 	private TypeConceptRepository typeConceptRepo;
+	
 	
 	@Override
 	@Transactional(readOnly=true)
@@ -46,14 +48,14 @@ public class EmployeeServiceImpl implements EmployeeService{
 	@Override
 	@Transactional(readOnly=true)
 	public Page<Employee> findAll(Pageable pageable) {
-		// TODO Auto-generated method stub
+		
 		return employeeRepo.findAll(pageable);
 	}
 
 	@Override
 	@Transactional(readOnly=true)
 	public Optional<Employee> findById(Long id) {
-		// TODO Auto-generated method stub
+		
 		return employeeRepo.findById(id);
 	}
 
@@ -216,6 +218,25 @@ public class EmployeeServiceImpl implements EmployeeService{
 	public Optional<Employee> findByEmail(String email) {
 		
 		return employeeRepo.findByEmail(email);
+	}
+
+	
+	@Override
+	@Transactional(readOnly=true)
+	public Iterable<EmployeeDto> getPaginatedAvailableEmployeesDto(int pageIndex, int pageSize) {
+		
+		
+		List<EmployeeDto> employeesAvailable = employeeRepo.getPaginatedAvailableEmployees(pageIndex, pageSize);
+		
+		
+		return employeesAvailable;
+	}
+
+	@Override
+	@Transactional(readOnly=true)
+	public Long getCountAvailableEmployees() {
+		
+		return employeeRepo.getCountAvailableEmployees();
 	}
 	
 	

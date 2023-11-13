@@ -73,4 +73,18 @@ public interface EmployeeService {
 	 * @return number of employees
 	 */
 	public Long getCountEmployees();
+	
+	/**
+	 * Get the total number of available employees
+	 * @return number of employees
+	 */
+	public Long getCountAvailableEmployees();
+	
+	/**
+	 * This method returns only employees that have no payments or that are all completed.
+	 * @param pageIndex the page index
+	 * @param pageSize the page size
+	 * @return List EmployeeDto objects
+	 */
+	public Iterable<EmployeeDto> getPaginatedAvailableEmployeesDto(int pageIndex, int pageSize);
 }

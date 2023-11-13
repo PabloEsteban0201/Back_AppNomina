@@ -43,7 +43,7 @@ public class PaymentController {
 	private EmployeeService employeeService;
 	
 	/**
-	 * This method reports the payment for a list of given in employees with a pay in process
+	 * This end point reports the payment for a list of given in employees with a pay in process
 	 * @param paymentDto
 	 * @return ReportPaymentDto is the detail report of the all payments
 	 */

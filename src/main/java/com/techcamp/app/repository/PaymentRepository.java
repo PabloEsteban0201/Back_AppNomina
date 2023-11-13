@@ -17,6 +17,7 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
 	@Query(value="select * from payments where payments.employee_fk = :employee_id", nativeQuery=true)
 	List<Payment> findByEmployeeId(@Param("employee_id") Long employeeId);
 	
+	
 	@Query(value="select * from payments where payments.employee_fk = :employee_id and finished = 0", nativeQuery=true)
 	Optional<Payment> findPaymentInProcessByEmployeeId(@Param("employee_id") Long employeeId);
 	

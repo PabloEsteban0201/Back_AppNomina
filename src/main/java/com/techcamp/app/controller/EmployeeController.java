@@ -94,6 +94,12 @@ public class EmployeeController {
 		
 	}
 	
+	/**
+	 * End point to get the EmployeesDto with pagination
+	 * @param pageNo the page index
+	 * @param pageSize the page size
+	 * @return List of EmployeeDto objects
+	 */
 	@GetMapping("/employeeDto/page/{pageNo}/{pageSize}")
 	public List<EmployeeDto> getPaginatedEmployeesDto(@PathVariable int pageNo, 
 			@PathVariable int pageSize){
@@ -292,10 +298,37 @@ public class EmployeeController {
 		
 	}
 	
-	@GetMapping("/check")
-	public ResponseEntity<Boolean> check(){
-		return null;
+	/**
+	 * Get the total of available employees
+	 * @return number Long 
+	 */
+	@GetMapping("/countAvialableEmployees")
+	public ResponseEntity<Long> getCountAvailableEmployees(){
+		
+		return ResponseEntity.ok(employeeService.getCountAvailableEmployees());
+		
 	}
+	
+	/**
+	 * End point to get the EmployeesDto with pagination that have no payments or those that have payments are finalized
+	 * @param pageNo the page index
+	 * @param pageSize the page size
+	 * @return List of EmployeeDto objects
+	 */
+	@GetMapping("/availableEmployeesDto/page/{pageNo}/{pageSize}")
+	public List<EmployeeDto> getPaginatedAvailableEmployeesDto(@PathVariable int pageNo, 
+			@PathVariable int pageSize){
+		
+		
+		List<EmployeeDto> employeesDto = StreamSupport.
+				stream(employeeService.getPaginatedAvailableEmployeesDto(pageNo, pageSize).spliterator(), false).
+				collect(Collectors.toList());
+		
+		
+		
+		return employeesDto;
+	}
+	
 	
 	
 }

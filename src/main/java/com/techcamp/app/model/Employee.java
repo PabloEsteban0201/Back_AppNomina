@@ -260,6 +260,49 @@ import lombok.NoArgsConstructor;
 		}
 	)
 
+@NamedNativeQuery(
+	    name = "getPaginatedAvailableEmployeesWithNoPayInProcess",
+	    query =
+	    		"SELECT e.name_person as namePerson, e.lastname as lastname, "
+	    		+ "e.personal_number as personalNumber, com.name_company as nameCompany, "
+	    		+ "cha.name_charge as nameCharge, e.salary as salary, e.abb_currency as currency, e.email as email, e.state as state "
+	    		+ "FROM employees e  "
+	    		+ "INNER JOIN charges CHA ON e.charge_fk = cha.charge_id "
+	    		+ "INNER JOIN companies com ON e.company_fk = com.company_id  "
+	    		+ "left JOIN payments P ON e.employee_id = p.employee_fk "
+	    		+ "minus "
+	    		+ "(select e.name_person, e.lastname, e.personal_number, com.name_company,  "
+	    		+ "cha.name_charge, e.salary, e.abb_currency, e.email, e.state "
+	    		+ "FROM employees E "
+	    		+ "INNER JOIN charges CHA ON e.charge_fk = cha.charge_id "
+	    		+ "INNER JOIN companies COM ON e.company_fk = com.company_id  "
+	    		+ "inner join payments P on e.employee_id = p.employee_fk "
+	    		+ "where p.finished=0) "
+	    		+ "order by personalNumber OFFSET (:page_index*:page_size) ROWS FETCH NEXT :page_size ROWS ONLY ",
+	    resultSetMapping = "getPaginatedAvailableEmployeesWithNoPayInProcess_mapping"
+	)
+
+@SqlResultSetMapping(
+	name = "getPaginatedAvailableEmployeesWithNoPayInProcess_mapping",
+	classes = {
+		@ConstructorResult(
+			targetClass = EmployeeDto.class,
+			columns = {  
+					@ColumnResult(name="namePerson", type= String.class),
+					@ColumnResult(name="lastname", type= String.class),
+					@ColumnResult(name="personalNumber", type= Long.class),
+					@ColumnResult(name="nameCompany", type= String.class),
+					@ColumnResult(name="nameCharge", type= String.class),
+					@ColumnResult(name="salary", type= BigDecimal.class),
+					@ColumnResult(name="currency", type= String.class),
+					@ColumnResult(name="email", type= String.class),
+					@ColumnResult(name="state", type= Integer.class)
+			}
+		)
+	}
+)
+
+
 
 
 @AllArgsConstructor

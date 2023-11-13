@@ -38,18 +38,45 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long>{
 	List<EmployeeDto> getEmployeesDto();
 	
 	
+	/**
+	 * Get the EmployeesDto with pagination
+	 * @param pageIndex the page index
+	 * @param pageSize the page size
+	 * @return List of EmployeeDto objects
+	 */
 	@Query(name="getPageEmployeesDto",nativeQuery = true)
 	List<EmployeeDto> getPaginatedEmployeesDto(@Param("pageIndex") int pageIndex, 
 			@Param("pageSize") int pageSize );
+	
+	/**
+	 * Query to obtain the employees who have no payments in process or have no payments, with pagination.
+	 * @param pageIndex the page index 
+	 * @param pageSize the page size
+	 * @return List of EmployeeDto objects
+	 */
+	@Query(name="getPaginatedAvailableEmployeesWithNoPayInProcess",nativeQuery = true)
+	List<EmployeeDto> getPaginatedAvailableEmployees(@Param("page_index") int pageIndex, 
+			@Param("page_size") int pageSize );
+	
 	
 	Optional<Employee> findByPersonalNumber(Long personalNumber);
 	
 	Optional<Employee> findByEmail(String email);
 	
-	
+	/**
+	 * Get the employees with a payed in process by company id
+	 * @param companyId the company ID 
+	 * @return List of EmployeeReportDto objects
+	 */
 	@Query(name="getEmployeesPayedByCompanyId", nativeQuery=true)
 	List<EmployeeReportDto> getEmployeesPayedByCompanyId(@Param("company_id") Long companyId);
 	
+	/**
+	 * Get the employees with a payed in process by company id and charge id
+	 * @param chargeId the charge ID 
+	 * @param companyId the company ID 
+	 * @return List of EmployeeReportDto objects
+	 */
 	@Query(name = "getEmployeesPayedByCompanyIdAndChargeId", nativeQuery=true)
 	List<EmployeeReportDto> getEmployeesPayedByCompanyIdAndChargeId(@Param("charge_id") Long chargeId, @Param("company_id") Long companyId);
 	
@@ -73,6 +100,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long>{
 	Optional<LiquidateEmployeeDto> getLiquidationDto(@Param("personal_number") Long personalNumber);
 	
 	
+	
 	@Transactional
 	@Modifying(clearAutomatically = true)
 	@Query(value = "CALL PR_SET_CURRENCY(:id_employee)", nativeQuery = true)
@@ -90,6 +118,19 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long>{
 			+ "com.company_id = :company_id ", nativeQuery = true)
 	String getCurrency(@Param("company_id") Long company_id);
 	
+	/**
+	 * Get the total of records in employees table
+	 * @return The number of employees 
+	 */
 	@Query(value="SELECT COUNT(*) FROM employees", nativeQuery = true)
 	Long getCountEmployees();
+	
+	/**
+	 * Get the total of records in available employees view
+	 * @return The number of employees 
+	 */
+	@Query(value="SELECT COUNT(*) FROM availableEmployees", nativeQuery = true)
+	Long getCountAvailableEmployees();
+	
+	
 }
