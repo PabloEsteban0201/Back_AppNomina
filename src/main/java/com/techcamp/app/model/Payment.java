@@ -141,8 +141,6 @@ public class Payment implements Serializable {
     @Column(name = "total")
     private BigDecimal total;
 
-    @Column(name = "period")
-    private Integer period;
     
     /**
      * 1 for finished
@@ -221,13 +219,6 @@ public class Payment implements Serializable {
 		this.total = total;
 	}
 
-	public Integer getPeriod() {
-		return period;
-	}
-
-	public void setPeriod(Integer period) {
-		this.period = period;
-	}
 
 	public Employee getEmployee() {
 		return employee;
@@ -265,7 +256,7 @@ public class Payment implements Serializable {
 	public String toString() {
 		return "Payment [paymentId=" + paymentId + ", payDate=" + payDate + ", totalBenefits=" + totalBenefits
 				+ ", totalRetentions=" + totalRetentions + ", totalLicenses=" + totalLicenses + ", totalTaxes="
-				+ totalTaxes + ", total=" + total + ", period=" + period + ", finished=" + finished + "]";
+				+ totalTaxes + ", total=" + total + ", finished=" + finished + "]";
 	}
 
 	

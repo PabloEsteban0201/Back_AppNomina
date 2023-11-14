@@ -50,6 +50,13 @@ public class PaymentServiceImpl implements PaymentService{
 		paymentRepo.reportPayment(payId);
 		
 	}
+	
+	@Override
+	@Transactional
+	public void deleteOldPayments(String date) {
+		paymentRepo.deleteOldPayments(date);
+	}
+
 
 	@Override
 	@Transactional(readOnly = true)
@@ -92,6 +99,8 @@ public class PaymentServiceImpl implements PaymentService{
 		
 		return payDetails;
 	}
+	
+	
 
 	
 	

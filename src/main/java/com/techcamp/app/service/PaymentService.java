@@ -13,7 +13,18 @@ public interface PaymentService {
 	
 	public Optional<Payment> findPaymentInProcessByEmployeeId(Long employeeId);
 	
+	/**
+	 * Method to call the procedure to calculate all the payment fields
+	 * @param payId the payment id
+	 */
 	public void reportPayment(Long payId);
+	
+	
+	/**
+	 * Method to call the procedure to delete the payments that are older than the given date
+	 * @param date_limit the date given in format DD-MM-YYYY
+	 */
+	public void deleteOldPayments(String date_limit);
 	
 	public Optional<Payment> findById(Long paymentId);
 	

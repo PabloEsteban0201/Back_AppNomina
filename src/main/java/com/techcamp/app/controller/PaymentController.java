@@ -113,6 +113,19 @@ public class PaymentController {
 		
 		return ResponseEntity.status(HttpStatus.OK).body(oPayDetailsDto.get());
 		
+	}
+	
+	@GetMapping("/deleteOldPayments/{date_limit}")
+	public ResponseEntity<?> deleteOldPayments(@PathVariable String date_limit){
+		
+		try {	
+			paymentService.deleteOldPayments(date_limit);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
+		
+		
+		return ResponseEntity.status(HttpStatus.OK).build();
 		
 	}
 	

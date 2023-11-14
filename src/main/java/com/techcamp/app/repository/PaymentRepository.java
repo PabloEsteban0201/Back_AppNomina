@@ -21,10 +21,23 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
 	@Query(value="select * from payments where payments.employee_fk = :employee_id and finished = 0", nativeQuery=true)
 	Optional<Payment> findPaymentInProcessByEmployeeId(@Param("employee_id") Long employeeId);
 	
+	/**
+	 * This query calls a procedure to calculate the values of the payment
+	 * @param paymentId the payment id
+	 */
 	@Transactional
 	@Modifying(clearAutomatically = true)
 	@Query(value = "CALL PR_CALC_PAYMENT(:id_payment)", nativeQuery = true)
 	void reportPayment(@Param("id_payment") Long paymentId);
+	
+	/**
+	 * This query is to delete all the payments that are older than a given date
+	 * @param date_limit the date
+	 */
+	@Transactional
+	@Modifying(clearAutomatically = true)
+	@Query(value = "CALL PR_DELETE_PAYMENTS_BY_DATE(':date_limit')", nativeQuery = true)
+	void deleteOldPayments(@Param("date_limit") String date_limit);
 
 	@Query(name="getPaymentDetailsDto",nativeQuery = true)
 	Optional<PaymentDetailsDto> getPaymentDetailsDto(@Param("payment_id") Long paymentId);
